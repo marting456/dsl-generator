@@ -10,7 +10,8 @@ repositories {
 }
 
 dependencies {
-    compile'commons-cli:commons-cli:1.2'
+    compile 'commons-cli:commons-cli:1.2'
+    compile 'org.freemarker:freemarker:2.3.14'
 }
 
 jar {
