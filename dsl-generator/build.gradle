@@ -1,7 +1,11 @@
+plugins {
+  id 'net.saliman.cobertura' version '2.2.7'
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 1.7
 version = '1.0'
 
 repositories {
@@ -24,3 +28,4 @@ jar {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
+
