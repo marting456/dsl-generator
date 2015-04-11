@@ -11,6 +11,8 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -18,9 +20,13 @@ import freemarker.template.TemplateException;
 
 public final class Main {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+			
 	private Main() { }
 
 	public static void main(String[] args) {
+		LOGGER.info("Starting...");
+		
 		readInputParameters(args);
         //Freemarker configuration object
         Configuration cfg = new Configuration();
@@ -43,7 +49,7 @@ public final class Main {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-		
+        LOGGER.debug("Finished");	
 	}
 
 	private static void readInputParameters(String[] args) {
