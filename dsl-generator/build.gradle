@@ -5,10 +5,19 @@ sourceCompatibility = 1.8
 version = '1.0'
 
 repositories {
-       mavenLocal()
-       mavenCentral()
-   }
+    mavenLocal()
+    mavenCentral()
+}
 
 dependencies {
     compile'commons-cli:commons-cli:1.2'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.marting.Main'
     }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
