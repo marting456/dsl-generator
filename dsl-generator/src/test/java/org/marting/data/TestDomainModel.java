@@ -1,7 +1,7 @@
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
-package org.marting.test;
+package org.marting.data;
 
 /**
  * @author martin

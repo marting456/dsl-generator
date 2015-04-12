@@ -13,3 +13,4 @@ dsl-generator/.gradle/2.3/taskArtifacts/taskArtifacts.bin
 dsl-generator/.settings/gradle/org.springsource.ide.eclipse.gradle.core.prefs
 dsl-generator/.settings/gradle/org.springsource.ide.eclipse.gradle.refresh.prefs
 dsl-generator/.settings/org.eclipse.jdt.core.prefs
+dsl-generator/src/test/resources/org/marting/data/TestDomainModel.class

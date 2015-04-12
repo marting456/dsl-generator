@@ -29,3 +29,11 @@ jar {
     }
 }
 
+task initTest(type: Copy) {
+     from('bin/org/marting/data') {
+        include "*.class"
+     }
+     into 'src/test/resources/org/marting/data'
+}
+initTest.mustRunAfter testClasses
+test.dependsOn initTest
