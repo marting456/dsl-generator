@@ -24,11 +24,23 @@ public final class Main {
 
 	private Main() { }
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ClassNotFoundException {
 		LOGGER.info("Starting...");
-
 		readInputParameters(args);
-        //Freemarker configuration object
+		String className = "org.marting.data.TestDomainModel";
+	    loadSourceClass(className);
+        createOutput();
+        LOGGER.debug("Finished");
+	}
+
+	static void loadSourceClass(String className) throws ClassNotFoundException {
+		ClassLoader classLoader = Main.class.getClassLoader();
+        Class<?> aClass = classLoader.loadClass(className);
+        System.out.println("aClass.getName() = " + aClass.getName());
+	}
+
+	private static void createOutput() {
+		//Freemarker configuration object
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(Main.class, "/");
         try {
@@ -49,7 +61,6 @@ public final class Main {
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-        LOGGER.debug("Finished");
 	}
 
 	private static void readInputParameters(String[] args) {
