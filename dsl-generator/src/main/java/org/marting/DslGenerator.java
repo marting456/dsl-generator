@@ -18,11 +18,11 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
-public final class Main {
+public final class DslGenerator {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(DslGenerator.class);
 
-	private Main() { }
+	private DslGenerator() { }
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		LOGGER.info("Starting...");
@@ -34,7 +34,7 @@ public final class Main {
 	}
 
 	static void loadSourceClass(String className) throws ClassNotFoundException {
-		ClassLoader classLoader = Main.class.getClassLoader();
+		ClassLoader classLoader = DslGenerator.class.getClassLoader();
         Class<?> aClass = classLoader.loadClass(className);
         System.out.println("aClass.getName() = " + aClass.getName());
 	}
@@ -42,7 +42,7 @@ public final class Main {
 	private static void createOutput() {
 		//Freemarker configuration object
         Configuration cfg = new Configuration();
-        cfg.setClassForTemplateLoading(Main.class, "/");
+        cfg.setClassForTemplateLoading(DslGenerator.class, "/");
         try {
             //Load template from source folder
             Template template = cfg.getTemplate("templates/dsl-template.ftl");
