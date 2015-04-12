@@ -21,12 +21,12 @@ import freemarker.template.TemplateException;
 public final class Main {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-			
+
 	private Main() { }
 
 	public static void main(String[] args) {
 		LOGGER.info("Starting...");
-		
+
 		readInputParameters(args);
         //Freemarker configuration object
         Configuration cfg = new Configuration();
@@ -34,22 +34,22 @@ public final class Main {
         try {
             //Load template from source folder
             Template template = cfg.getTemplate("templates/dsl-template.ftl");
-             
+
             // Build the data-model
             Map<String, Object> data = new HashMap<String, Object>();
             data.put("dslClassName", "TestDSL");
-            
+
             // Console output
             Writer out = new OutputStreamWriter(System.out);
             template.process(data, out);
             out.flush();
-             
+
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TemplateException e) {
             e.printStackTrace();
         }
-        LOGGER.debug("Finished");	
+        LOGGER.debug("Finished");
 	}
 
 	private static void readInputParameters(String[] args) {
@@ -69,7 +69,7 @@ public final class Main {
 				System.out.println("value: " + line.getOptionValue("b"));
 			}
 		} catch (ParseException exp) {
-			System.out.println("Unexpected exception:" + exp.getMessage());
+			LOGGER.error("Unexpected exception:" + exp.getMessage());
 		}
 	}
 }
