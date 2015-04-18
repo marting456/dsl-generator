@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -36,7 +36,7 @@ public final class DslGenerator {
 		readInputParameters(args);
 		String className = "org.marting.data.TestDomainModelChild";
 	    Class<?> aClass = loadSourceClass(className);
-	    List<Field> fields = getFields(aClass);
+	    List<DslField> fields = getFields(aClass);
 	    Set<Class<?>> imports = getImports(fields);
         createOutput(aClass, imports, fields);
         LOGGER.debug("Finished");
@@ -49,22 +49,26 @@ public final class DslGenerator {
         return aClass;
 	}
 
-	static List<Field> getFields(Class<?> aClass) {
+	static List<DslField> getFields(Class<?> aClass) {
 		Field[] fields = FieldUtils.getAllFields(aClass);
-		return Arrays.asList(fields);
+		List<DslField> dslFields = new ArrayList<DslField>();
+		for (Field field : fields) {
+			dslFields.add(new DslField(field));
+		}
+		return dslFields;
 	}
 
-	static Set<Class<?>> getImports(List<Field> fields) {
+	static Set<Class<?>> getImports(List<DslField> fields) {
 		Set<Class<?>> imports  = new HashSet<Class<?>>();
-		for (Field field : fields) {
-			if (!field.getType().isPrimitive()) {
-				imports.add(field.getType());
+		for (DslField dslField : fields) {
+			if (!dslField.getField().getType().isPrimitive()) {
+				imports.add(dslField.getField().getType());
 			}
 		}
 		return imports;
 	}
 
-	static void createOutput(Class<?> aClass, Set<Class<?>> imports, List<Field> fields) {
+	static void createOutput(Class<?> aClass, Set<Class<?>> imports, List<DslField> dslFields) {
 		//Freemarker configuration object
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(DslGenerator.class, "/");
@@ -76,9 +80,9 @@ public final class DslGenerator {
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("className", aClass.getSimpleName());
             model.put("dslClassName", aClass.getSimpleName() + "DSL");
-            model.put("fields", fields);
+            model.put("dslFields", dslFields);
             model.put("imports", imports);
-            model.put("getMethodName", Introspector.decapitalize(aClass.getSimpleName()));
+            model.put("classObj", Introspector.decapitalize(aClass.getSimpleName()));
 
             // Console output
             Writer out = new OutputStreamWriter(System.out);

@@ -15,6 +15,9 @@ import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Lists;
+
 public class DslGeneratorTest {
 
 	private static final String TEST_CLASS_NAME = "org.marting.data.TestDomainModelChild";
@@ -32,7 +35,8 @@ public class DslGeneratorTest {
 
 	@Test
 	public void shouldReadFields() throws ClassNotFoundException  {
-		List<Field> fields = DslGenerator.getFields(aClass);
+		List<DslField> dslFields = DslGenerator.getFields(aClass);
+		List<Field> fields = Lists.transform(dslFields, DslFieldToField.INSTANCE);
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(int.class))));
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(double.class))));
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(float.class))));
@@ -48,8 +52,17 @@ public class DslGeneratorTest {
 
 	@Test
 	public void shouldReadParentFields() throws ClassNotFoundException  {
-		List<Field> fields = DslGenerator.getFields(aClass);
+		List<DslField> dslFields = DslGenerator.getFields(aClass);
+		List<Field> fields = Lists.transform(dslFields, DslFieldToField.INSTANCE);
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("name", equalTo("intFieldP"))));
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("name", equalTo("stringFieldP"))));
 	}
+
+	private enum DslFieldToField implements Function<DslField, Field> {
+		INSTANCE;
+        @Override
+        public Field apply(DslField input) {
+            return input.getField();
+        }
+    }
 }

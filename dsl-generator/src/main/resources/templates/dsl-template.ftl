@@ -5,22 +5,30 @@ import ${class};
 public class ${dslClassName}() extends AbstractDSL<AbstractDSL, ${className}> {
           
     // members        
-    <#list fields as field>
-    private ${field.type.simpleName} ${field.name} = null;
+    <#list dslFields as dslField>
+    private ${dslField.field.type.simpleName} ${dslField.field.name} = null;
     </#list>
     
     // constructor
     private ${dslClassName} () { };
     
-    // methods
-    
-    public ${className} ${getMethodName}() {
-        return new ${className}();
+    // methods    
+    public ${dslClassName} ${classObj}() {
+        return new ${dslClassName}();
     }
     
-    public static ${dslClassName} build() {
-        return new ${dslClassName};
+    public static ${className} build() {
+        ${className} ${classObj} = new ${className}();        
+        <#list dslFields as dslField>
+        ${classObj}.${dslField.setterMethod}(this.${dslField.field.name});
+        </#list>
+        return ${classObj};
     }
     
-    
+    <#list dslFields as dslField>
+    public static ${dslClassName} ${dslField.withMethod}(${dslField.field.type.simpleName} ${dslField.field.name}){
+        this.${dslField.field.name} = ${dslField.field.name};
+        return this;
+    }
+    </#list>    
 } 
