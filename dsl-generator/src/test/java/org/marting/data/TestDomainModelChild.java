@@ -8,7 +8,7 @@ package org.marting.data;
  *
  */
 @SuppressWarnings("unused")
-public class TestDomainModel {
+public class TestDomainModelChild extends TestDomainModelParent {
 
 	//CHECKSTYLE:OFF
 	private int intField;

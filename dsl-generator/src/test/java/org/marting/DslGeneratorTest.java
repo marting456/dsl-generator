@@ -16,10 +16,12 @@ import org.junit.Test;
 
 public class DslGeneratorTest {
 
+	private static final String TEST_CLASS_NAME = "org.marting.data.TestDomainModelChild";
+
 	@Test
 	public void shouldLoadClassFile() {
 		try {
-			DslGenerator.loadSourceClass("org.marting.data.TestDomainModel");
+			DslGenerator.loadSourceClass(TEST_CLASS_NAME);
 		} catch (Exception e) {
 			fail("Unbable to load class" + e.toString());
 		}
@@ -27,7 +29,7 @@ public class DslGeneratorTest {
 
 	@Test
 	public void shouldReadFields() throws ClassNotFoundException  {
-		Class<?> aClass = DslGenerator.loadSourceClass("org.marting.data.TestDomainModel");
+		Class<?> aClass = DslGenerator.loadSourceClass(TEST_CLASS_NAME);
 		List<Field> fields = DslGenerator.getFields(aClass);
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(int.class))));
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(double.class))));
@@ -40,5 +42,13 @@ public class DslGeneratorTest {
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Float.class))));
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Short.class))));
 		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Long.class))));
+	}
+
+	@Test
+	public void shouldReadParentFields() throws ClassNotFoundException  {
+		Class<?> aClass = DslGenerator.loadSourceClass(TEST_CLASS_NAME);
+		List<Field> fields = DslGenerator.getFields(aClass);
+		assertThat(fields, hasItem(Matchers.<Field>hasProperty("name", equalTo("intFieldP"))));
+		assertThat(fields, hasItem(Matchers.<Field>hasProperty("name", equalTo("stringFieldP"))));
 	}
 }
