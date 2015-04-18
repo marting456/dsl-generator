@@ -32,12 +32,12 @@ public final class DslGenerator {
 	private DslGenerator() { }
 
 	public static void main(String[] args) throws ClassNotFoundException {
-		LOGGER.info("Starting...");
+		LOGGER.debug("Starting...");
 		readInputParameters(args);
 		String className = "org.marting.data.TestDomainModelChild";
 	    Class<?> aClass = loadSourceClass(className);
 	    List<Field> fields = getFields(aClass);
-	    Set<Class> imports = getImports(fields);
+	    Set<Class<?>> imports = getImports(fields);
         createOutput(aClass, imports, fields);
         LOGGER.debug("Finished");
 	}
@@ -45,7 +45,7 @@ public final class DslGenerator {
 	static Class<?> loadSourceClass(String className) throws ClassNotFoundException {
 		ClassLoader classLoader = DslGenerator.class.getClassLoader();
         Class<?> aClass = classLoader.loadClass(className);
-        LOGGER.info("aClass.getName() = " + aClass.getName());
+        LOGGER.debug("aClass.getName() = " + aClass.getName());
         return aClass;
 	}
 
@@ -54,8 +54,8 @@ public final class DslGenerator {
 		return Arrays.asList(fields);
 	}
 
-	static Set<Class> getImports(List<Field> fields) {
-		Set<Class> imports  = new HashSet<Class>();
+	static Set<Class<?>> getImports(List<Field> fields) {
+		Set<Class<?>> imports  = new HashSet<Class<?>>();
 		for (Field field : fields) {
 			if (!field.getType().isPrimitive()) {
 				imports.add(field.getType());
@@ -64,7 +64,7 @@ public final class DslGenerator {
 		return imports;
 	}
 
-	static void createOutput(Class aClass, Set<Class> imports, List<Field> fields) {
+	static void createOutput(Class<?> aClass, Set<Class<?>> imports, List<Field> fields) {
 		//Freemarker configuration object
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(DslGenerator.class, "/");
