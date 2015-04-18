@@ -16,3 +16,4 @@ TODO
 + write to file
 + upgrad to java 8
 + replace cobertura with jacoco
++ add publish to build
