@@ -1,13 +1,16 @@
 package org.marting;
 
+import java.beans.Introspector;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -31,10 +34,11 @@ public final class DslGenerator {
 	public static void main(String[] args) throws ClassNotFoundException {
 		LOGGER.info("Starting...");
 		readInputParameters(args);
-		String className = "org.marting.data.TestDomainModel";
+		String className = "org.marting.data.TestDomainModelChild";
 	    Class<?> aClass = loadSourceClass(className);
-	    getFields(aClass);
-        createOutput();
+	    List<Field> fields = getFields(aClass);
+	    Set<Class> imports = getImports(fields);
+        createOutput(aClass, imports, fields);
         LOGGER.debug("Finished");
 	}
 
@@ -50,7 +54,17 @@ public final class DslGenerator {
 		return Arrays.asList(fields);
 	}
 
-	static void createOutput() {
+	static Set<Class> getImports(List<Field> fields) {
+		Set<Class> imports  = new HashSet<Class>();
+		for (Field field : fields) {
+			if (!field.getType().isPrimitive()) {
+				imports.add(field.getType());
+			}
+		}
+		return imports;
+	}
+
+	static void createOutput(Class aClass, Set<Class> imports, List<Field> fields) {
 		//Freemarker configuration object
         Configuration cfg = new Configuration();
         cfg.setClassForTemplateLoading(DslGenerator.class, "/");
@@ -59,12 +73,16 @@ public final class DslGenerator {
             Template template = cfg.getTemplate("templates/dsl-template.ftl");
 
             // Build the data-model
-            Map<String, Object> data = new HashMap<String, Object>();
-            data.put("dslClassName", "TestDSL");
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("className", aClass.getSimpleName());
+            model.put("dslClassName", aClass.getSimpleName() + "DSL");
+            model.put("fields", fields);
+            model.put("imports", imports);
+            model.put("getMethodName", Introspector.decapitalize(aClass.getSimpleName()));
 
             // Console output
             Writer out = new OutputStreamWriter(System.out);
-            template.process(data, out);
+            template.process(model, out);
             out.flush();
 
         } catch (IOException e) {
