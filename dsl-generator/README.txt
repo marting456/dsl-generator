@@ -14,3 +14,5 @@ TODO
 + ignore static fields
 + handle enums
 + write to file
++ upgrad to java 8
++ replace cobertura with jacoco
