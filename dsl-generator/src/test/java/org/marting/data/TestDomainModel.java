@@ -11,9 +11,16 @@ package org.marting.data;
 public class TestDomainModel {
 
 	//CHECKSTYLE:OFF
+	private int intField;
+	private double doubleField;
+	private float floatField;
+	private long longField;
+	private short shortField;
 	private String stringField;
 	private Integer integerObjField;
 	private Double doubleObjField;
-	private int intField;
+	private Float floatObjField;
+	private Long longObjField;
+	private Short shortObjField;
 	//CHECKSTYLE:ON
 }
