@@ -13,6 +13,7 @@ import java.util.Date;
 public class TestDomainModelChild extends TestDomainModelParent {
 
 	//CHECKSTYLE:OFF
+	private static final String STATIC_FINAL_FIELD = "staticFinalField";
 	private int intField;
 	private double doubleField;
 	private float floatField;

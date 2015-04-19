@@ -6,6 +6,7 @@
 - add dates
 - upgrad to java 8
 - replace cobertura with jacoco
+- ignore static fields
 
 TODO
 + write to file
@@ -15,7 +16,6 @@ TODO
 + options
 + add custom Type objects
 + generate meaningful random values
-+ ignore static fields
 + handle enums
 + add publish to build
 + change to java streams sublists

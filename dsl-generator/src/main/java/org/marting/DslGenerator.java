@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -58,9 +59,11 @@ public final class DslGenerator {
 		Field[] fields = FieldUtils.getAllFields(aClass);
 		List<DslField> dslFields = new ArrayList<DslField>();
 		for (Field field : fields) {
-			DslField dslField = new DslField(field);
-			dslField.setGeneratorValue(getGeneratorValue(field));
-			dslFields.add(dslField);
+			if (!(Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()))) {
+				DslField dslField = new DslField(field);
+				dslField.setGeneratorValue(getGeneratorValue(field));
+				dslFields.add(dslField);
+			}
 		}
 		return dslFields;
 	}
