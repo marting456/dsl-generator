@@ -3,6 +3,8 @@
  */
 package org.marting.data;
 
+import java.util.Date;
+
 /**
  * @author martin
  *
@@ -22,5 +24,6 @@ public class TestDomainModelChild extends TestDomainModelParent {
 	private Float floatObjField;
 	private Long longObjField;
 	private Short shortObjField;
+	private Date dateObjField;
 	//CHECKSTYLE:ON
 }

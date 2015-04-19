@@ -2,9 +2,9 @@
 - insert fields in template
 - add with methods
 - reflect on parent class
+- generate random values
 
 TODO
-+ generate random values
 + add Date
 
 + options
@@ -17,3 +17,7 @@ TODO
 + upgrad to java 8
 + replace cobertura with jacoco
 + add publish to build
++ change to java streams sublists
++ constants for date, int, etc
++ tests for generated values
++ compile result

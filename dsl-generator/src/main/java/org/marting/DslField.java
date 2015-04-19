@@ -43,5 +43,4 @@ public class DslField {
 	public String getGetterMethod() {
 		return "get" + WordUtils.capitalize(field.getName());
 	}
-
 }
