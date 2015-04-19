@@ -3,20 +3,22 @@
 - add with methods
 - reflect on parent class
 - generate random values
+- add dates
 
 TODO
++ write to file
++ add abstract dsl
++ tests for generated values
+
 + options
 + add custom Type objects
 + generate meaningful random values
-+ add abstract dsl
 + ignore static fields
 + handle enums
-+ write to file
 + upgrad to java 8
 + replace cobertura with jacoco
 + add publish to build
 + change to java streams sublists
 + constants for date, int, etc
-+ tests for generated values
 + compile result
 + README
