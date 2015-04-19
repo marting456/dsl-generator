@@ -111,6 +111,7 @@ public final class DslGenerator {
             // Build the data-model
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("className", dslModel.getSourceClass().getSimpleName());
+            model.put("packageName", dslModel.getSourceClass().getPackage());
             model.put("dslClassName", dslModel.getSourceClass().getSimpleName() + "DSL");
             model.put("dslFields", dslModel.getFields());
             model.put("imports", dslModel.getImports());

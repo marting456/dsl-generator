@@ -1,3 +1,5 @@
+package ${packageName};
+
 <#list imports as class>
 import ${class};
 </#list>
