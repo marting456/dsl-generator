@@ -4,6 +4,8 @@
 - reflect on parent class
 - generate random values
 - add dates
+- upgrad to java 8
+- replace cobertura with jacoco
 
 TODO
 + write to file
@@ -15,8 +17,6 @@ TODO
 + generate meaningful random values
 + ignore static fields
 + handle enums
-+ upgrad to java 8
-+ replace cobertura with jacoco
 + add publish to build
 + change to java streams sublists
 + constants for date, int, etc

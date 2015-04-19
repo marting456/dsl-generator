@@ -1,11 +1,8 @@
-plugins {
-  id 'net.saliman.cobertura' version '2.2.7'
-}
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: "jacoco"
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 version = '1.0'
 
 repositories {
