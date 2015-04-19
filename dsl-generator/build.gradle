@@ -18,7 +18,7 @@ dependencies {
     compile 'org.freemarker:freemarker:2.3.14'
     compile 'org.slf4j:log4j-over-slf4j:1.7.7'
     compile 'org.slf4j:slf4j-simple:1.7.7'
-    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.commons:commons-lang3:3.4'    
     compile 'commons-collections:commons-collections:3.2.1'
     testCompile 'com.google.guava:guava:18.0'
     testCompile 'junit:junit:4.12'    

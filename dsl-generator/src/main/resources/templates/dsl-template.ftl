@@ -6,7 +6,7 @@ public class ${dslClassName}() extends AbstractDSL<AbstractDSL, ${className}> {
           
     // members        
     <#list dslFields as dslField>
-    private ${dslField.field.type.simpleName} ${dslField.field.name} = null;
+    private ${dslField.field.type.simpleName} ${dslField.field.name} = ${dslField.generatorValue};
     </#list>
     
     // constructor

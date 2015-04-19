@@ -14,7 +14,15 @@ import org.apache.commons.lang3.text.WordUtils;
 public class DslField {
 
 	Field field;
-	String withMethod;
+	String generatorValue;
+
+	public String getGeneratorValue() {
+		return generatorValue;
+	}
+
+	public void setGeneratorValue(String generatorValue) {
+		this.generatorValue = generatorValue;
+	}
 
 	public DslField(Field field) {
 		this.field = field;
