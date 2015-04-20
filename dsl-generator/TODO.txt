@@ -7,12 +7,12 @@
 - upgrad to java 8
 - replace cobertura with jacoco
 - ignore static fields
+- write to file
+- add abstract dsl
 
 TODO
-+ write to file
-+ add abstract dsl
++ compile result
 + tests for generated values
-
 + options
 + add custom Type objects
 + generate meaningful random values
@@ -20,5 +20,4 @@ TODO
 + add publish to build
 + change to java streams sublists
 + constants for date, int, etc
-+ compile result
 + README

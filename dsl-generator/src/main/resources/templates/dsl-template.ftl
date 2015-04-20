@@ -4,7 +4,7 @@ package ${packageName};
 import ${class};
 </#list>
 
-public class ${dslClassName}() extends AbstractDSL<AbstractDSL, ${className}> {
+public class ${dslClassName}() extends AbstractDSL<${dslClassName}, ${className}> {
           
     // members        
     <#list dslFields as dslField>

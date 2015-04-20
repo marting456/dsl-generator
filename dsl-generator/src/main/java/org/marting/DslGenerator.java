@@ -2,7 +2,8 @@ package org.marting;
 
 import java.beans.Introspector;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -114,16 +115,30 @@ public final class DslGenerator {
             // Build the data-model
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("className", dslModel.getSourceClass().getSimpleName());
-            model.put("packageName", dslModel.getSourceClass().getPackage());
+            model.put("packageName", dslModel.getSourceClass().getPackage().getName());
             model.put("dslClassName", dslModel.getSourceClass().getSimpleName() + "DSL");
             model.put("dslFields", dslModel.getFields());
             model.put("imports", dslModel.getImports());
             model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
 
             // Console output
-            Writer out = new OutputStreamWriter(System.out);
+            PrintWriter fileWriter = new PrintWriter(dslModel.getSourceClass().getSimpleName() + "DSL.java");
+            Writer out = new StringWriter();
             template.process(model, out);
             out.flush();
+            fileWriter.print(out.toString());
+            fileWriter.close();
+            LOGGER.debug(out.toString());
+            out.close();
+
+            template = cfg.getTemplate("templates/abstract-dsl.ftl");
+            out = new StringWriter();
+            fileWriter = new PrintWriter("AbstractDSL.java");
+            template.process(model, out);
+            out.flush();
+            fileWriter.print(out.toString());
+            fileWriter.close();
+            out.close();
 
         } catch (IOException e) {
             e.printStackTrace();
