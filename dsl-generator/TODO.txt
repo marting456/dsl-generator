@@ -13,6 +13,7 @@
 TODO
 + compile result
 + tests for generated values
+
 + options
 + add custom Type objects
 + generate meaningful random values
