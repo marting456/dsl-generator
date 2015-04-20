@@ -15,7 +15,9 @@ TODO
 + tests for generated values
 
 BACKLOG
-+ options
++ options -h
++ options -input
++ options -generate-abstract
 + add custom Type objects
 + generate meaningful random values
 + handle enums
