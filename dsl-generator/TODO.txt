@@ -14,6 +14,7 @@ TODO
 + compile result
 + tests for generated values
 
+BACKLOG
 + options
 + add custom Type objects
 + generate meaningful random values
