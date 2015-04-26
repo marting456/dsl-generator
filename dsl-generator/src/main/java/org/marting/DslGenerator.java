@@ -1,12 +1,16 @@
 package org.marting;
 
 import java.beans.Introspector;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -35,12 +39,14 @@ public final class DslGenerator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DslGenerator.class);
 
+	private static CommandLine commands = null;
+
 	private DslGenerator() { }
 
 	public static void main(String[] args) throws ClassNotFoundException {
 		LOGGER.debug("Starting...");
 		readInputParameters(args);
-		String className = "org.marting.data.TestDomainModelChild";
+		String className =  args[0];
 		DslModel model = new DslModel();
 	    model.setSourceClass(loadSourceClass(className));
 	    model.setFields(getFields(model.getSourceClass()));
@@ -50,8 +56,41 @@ public final class DslGenerator {
 	}
 
 	static Class<?> loadSourceClass(String className) throws ClassNotFoundException {
-		ClassLoader classLoader = DslGenerator.class.getClassLoader();
-        Class<?> aClass = classLoader.loadClass(className);
+
+		File file = new File("");
+		Class<?> aClass = null;
+		URLClassLoader loader = null;
+
+		if (commands != null && commands.hasOption("d")) {
+			file = new File(commands.getOptionValue("d"));
+		}
+
+		try {
+			URL url =  file.toURI().toURL();
+			URL[] urls = new URL[] { url };
+
+			// Create a new class loader with the directory
+			loader = new URLClassLoader(urls);
+
+			// Load in the class; Class.childclass should be located in
+			// the directory file:/c:/class/user/information
+			LOGGER.info("urls: " + url.toString());
+			LOGGER.info("class: " + className);
+			aClass = loader.loadClass(className);
+		} catch (MalformedURLException e) {
+	        LOGGER.error(e.toString());
+	        System.exit(1);
+		} catch (ClassNotFoundException e) {
+	        LOGGER.error(e.toString());
+	        System.exit(1);
+		} finally {
+			try {
+				loader.close();
+			} catch (IOException e) {
+				LOGGER.error(e.getMessage());
+			}
+		}
+
         LOGGER.debug("aClass.getName() = " + aClass.getName());
         return aClass;
 	}
@@ -150,18 +189,15 @@ public final class DslGenerator {
 	static void readInputParameters(String[] args) {
 		CommandLineParser parser = new BasicParser();
 		Options options = new Options();
-		options.addOption("a", "all", false, "do not hide entries starting with .");
-		options.addOption("A", "almost-all", false, "do not list implied . and ..");
-		options.addOption("b", "escape", true, "print octal escapes for nongraphic ");
+		options.addOption("d", true, "source directory.");
 
 		try {
 			// parse the command line arguments
-			CommandLine line = parser.parse(options, args);
+			commands = parser.parse(options, args);
 
-			// validate that block-size has been set
-			if (line.hasOption("b")) {
+			if (commands.hasOption("d")) {
 				// print the value of block-size
-				LOGGER.info("value: " + line.getOptionValue("b"));
+				LOGGER.info("-d: " + commands.getOptionValue("d"));
 			}
 		} catch (ParseException exp) {
 			LOGGER.error("Unexpected exception:" + exp.getMessage());
