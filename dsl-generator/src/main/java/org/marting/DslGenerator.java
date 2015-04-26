@@ -23,6 +23,7 @@ import java.util.TreeSet;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -38,6 +39,7 @@ import freemarker.template.TemplateException;
 public final class DslGenerator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DslGenerator.class);
+	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [-d /path/to/class/package]";
 
 	private static CommandLine commands = null;
 
@@ -46,7 +48,7 @@ public final class DslGenerator {
 	public static void main(String[] args) throws ClassNotFoundException {
 		LOGGER.debug("Starting...");
 		readInputParameters(args);
-		String className =  args[0];
+		String className =  commands.getOptionValue("c");
 		DslModel model = new DslModel();
 	    model.setSourceClass(loadSourceClass(className));
 	    model.setFields(getFields(model.getSourceClass()));
@@ -189,15 +191,18 @@ public final class DslGenerator {
 	static void readInputParameters(String[] args) {
 		CommandLineParser parser = new BasicParser();
 		Options options = new Options();
-		options.addOption("d", true, "source directory.");
+		options.addOption("d", true, "source directory, defaults to current directory.");
+		options.addOption("c", "class", true, "fully qualified name of source class ie. com.example.SomeClass.");
+		options.addOption("h", false, "print this message");
 
 		try {
 			// parse the command line arguments
 			commands = parser.parse(options, args);
 
-			if (commands.hasOption("d")) {
-				// print the value of block-size
-				LOGGER.info("-d: " + commands.getOptionValue("d"));
+			if (commands.getOptionValue("c") == null ) {
+				HelpFormatter formatter = new HelpFormatter();
+				formatter.printHelp( USAGE, options );
+				System.exit(1);
 			}
 		} catch (ParseException exp) {
 			LOGGER.error("Unexpected exception:" + exp.getMessage());
