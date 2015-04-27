@@ -8,6 +8,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
@@ -41,6 +42,7 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getType().equals(String.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Double.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Integer.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Date.class)).count(), equalTo(1L));
 	}
 
 	@Test
