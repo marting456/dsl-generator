@@ -10,12 +10,10 @@ import static org.junit.Assert.fail;
 import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.junit.Before;
 import org.junit.Test;
-
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 
 public class DslGeneratorTest {
 
@@ -35,7 +33,7 @@ public class DslGeneratorTest {
 	@Test
 	public void shouldReadFields() throws ClassNotFoundException  {
 		List<DslField> dslFields = DslGenerator.getFields(aClass);
-		List<Field> fields = Lists.transform(dslFields, DslFieldToField.INSTANCE);
+		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getType().equals(Long.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Short.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Float.class)).count(), equalTo(2L));
@@ -48,16 +46,8 @@ public class DslGeneratorTest {
 	@Test
 	public void shouldReadParentFields() throws ClassNotFoundException  {
 		List<DslField> dslFields = DslGenerator.getFields(aClass);
-		List<Field> fields = Lists.transform(dslFields, DslFieldToField.INSTANCE);
+		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringFieldP")).count(), equalTo(1L));
 	}
-
-	private enum DslFieldToField implements Function<DslField, Field> {
-		INSTANCE;
-        @Override
-        public Field apply(DslField input) {
-            return input.getField();
-        }
-    }
 }
