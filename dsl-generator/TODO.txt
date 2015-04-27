@@ -11,17 +11,21 @@
 - add abstract dsl
 - options -h
 - options -input
+- options -generate-abstract
+- change to java streams sublists
 
 TODO
-+ options -generate-abstract
 + compile result
 + tests for generated values
 
 BACKLOG
-+ change to java streams sublists
++ refactor to non-static
++ classpath input
++ handle lists
++ handle arrays
++ handle sets
 + constants for date, int, etc
 + add custom Type objects
 + generate meaningful random values
 + handle enums
-+ add publish to build
 + README
