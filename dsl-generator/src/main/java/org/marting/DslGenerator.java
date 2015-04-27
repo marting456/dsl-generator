@@ -172,14 +172,16 @@ public final class DslGenerator {
             LOGGER.debug(out.toString());
             out.close();
 
-            template = cfg.getTemplate("templates/abstract-dsl.ftl");
-            out = new StringWriter();
-            fileWriter = new PrintWriter("AbstractDSL.java");
-            template.process(model, out);
-            out.flush();
-            fileWriter.print(out.toString());
-            fileWriter.close();
-            out.close();
+			if (commands.hasOption("ga")) {
+				template = cfg.getTemplate("templates/abstract-dsl.ftl");
+				out = new StringWriter();
+				fileWriter = new PrintWriter("AbstractDSL.java");
+				template.process(model, out);
+				out.flush();
+				fileWriter.print(out.toString());
+				fileWriter.close();
+				out.close();
+			}
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -191,9 +193,10 @@ public final class DslGenerator {
 	static void readInputParameters(String[] args) {
 		CommandLineParser parser = new BasicParser();
 		Options options = new Options();
-		options.addOption("d", true, "source directory, defaults to current directory.");
+		options.addOption("d", true, "the directory where the root package is located, ie {root-package-dir}/com/example/SomeClass. defaults to current directory.");
 		options.addOption("c", "class", true, "fully qualified name of source class ie. com.example.SomeClass.");
 		options.addOption("h", false, "print this message");
+		options.addOption("ga", "generate-abstract", false, "generate abstract base class");
 
 		try {
 			// parse the command line arguments
