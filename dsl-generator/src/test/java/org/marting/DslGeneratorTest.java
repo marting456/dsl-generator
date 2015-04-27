@@ -4,14 +4,12 @@
 package org.marting;
 
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItem;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.List;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,25 +35,20 @@ public class DslGeneratorTest {
 	public void shouldReadFields() throws ClassNotFoundException  {
 		List<DslField> dslFields = DslGenerator.getFields(aClass);
 		List<Field> fields = Lists.transform(dslFields, DslFieldToField.INSTANCE);
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(int.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(double.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(float.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(long.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(short.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(String.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Integer.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Double.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Float.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Short.class))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("type", equalTo(Long.class))));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Long.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Short.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Float.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(String.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Double.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Integer.class)).count(), equalTo(2L));
 	}
 
 	@Test
 	public void shouldReadParentFields() throws ClassNotFoundException  {
 		List<DslField> dslFields = DslGenerator.getFields(aClass);
 		List<Field> fields = Lists.transform(dslFields, DslFieldToField.INSTANCE);
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("name", equalTo("intFieldP"))));
-		assertThat(fields, hasItem(Matchers.<Field>hasProperty("name", equalTo("stringFieldP"))));
+		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("stringFieldP")).count(), equalTo(1L));
 	}
 
 	private enum DslFieldToField implements Function<DslField, Field> {
