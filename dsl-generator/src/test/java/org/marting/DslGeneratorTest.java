@@ -40,6 +40,11 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getType().equals(String.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Double.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Integer.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(long.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(short.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(float.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(double.class)).count(), equalTo(2L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(int.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Date.class)).count(), equalTo(1L));
 	}
 
