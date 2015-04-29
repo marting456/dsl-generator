@@ -1,7 +1,7 @@
 package ${packageName};
 
 <#list imports as class>
-import ${class};
+import ${class.name};
 </#list>
 
 public class ${dslClassName}() extends AbstractDSL<${dslClassName}, ${className}> {

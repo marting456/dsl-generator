@@ -13,13 +13,15 @@
 - options -input
 - options -generate-abstract
 - change to java streams sublists
+- refactor to non-static
+- make debug optional
 
 TODO
 + compile result
 + tests for generated values
 
 BACKLOG
-+ refactor to non-static
++ fix debug messages
 + classpath input
 + handle lists
 + handle arrays

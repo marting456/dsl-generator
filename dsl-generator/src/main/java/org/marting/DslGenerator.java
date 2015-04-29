@@ -3,7 +3,6 @@ package org.marting;
 import java.beans.Introspector;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -20,12 +19,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.cli.BasicParser;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Options;
-import org.apache.commons.cli.ParseException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
@@ -39,43 +32,39 @@ import freemarker.template.TemplateException;
 public final class DslGenerator {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DslGenerator.class);
-	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [-d /path/to/class/package]";
 
-	private static CommandLine commands = null;
+	private DslModel dslModel;
+	private Configuration cfg;
 
-	private DslGenerator() { }
-
-	public static void main(String[] args) throws ClassNotFoundException {
-		LOGGER.debug("Starting...");
-		readInputParameters(args);
-		String className =  commands.getOptionValue("c");
-		DslModel model = new DslModel();
-	    model.setSourceClass(loadSourceClass(className));
-	    model.setFields(getFields(model.getSourceClass()));
-	    model.setImports(getImports(model.getFields()));
-        createOutput(model);
-        LOGGER.debug("Finished");
+	public DslGenerator() {
+		//Freemarker configuration object
+        this.cfg = new Configuration();
+        this.cfg.setClassForTemplateLoading(DslGenerator.class, "/");
 	}
 
-	static Class<?> loadSourceClass(String className) throws ClassNotFoundException {
+	public String generateDSL(String className, String dir) throws ClassNotFoundException {
+		dslModel = new DslModel();
+	    dslModel.setSourceClass(loadSourceClass(className, dir));
+	    dslModel.setFields(getFields(dslModel.getSourceClass()));
+	    dslModel.setImports(getImports(dslModel.getFields()));
+	    return createOutput(dslModel);
+	}
 
-		File file = new File("");
+	public String getDslClassName() {
+		return dslModel.getSourceClass().getSimpleName();
+	}
+
+	Class<?> loadSourceClass(String className, String dir) throws ClassNotFoundException {
+
+		File file = new File(dir);
 		Class<?> aClass = null;
 		URLClassLoader loader = null;
-
-		if (commands != null && commands.hasOption("d")) {
-			file = new File(commands.getOptionValue("d"));
-		}
 
 		try {
 			URL url =  file.toURI().toURL();
 			URL[] urls = new URL[] { url };
-
 			// Create a new class loader with the directory
 			loader = new URLClassLoader(urls);
-
-			// Load in the class; Class.childclass should be located in
-			// the directory file:/c:/class/user/information
 			LOGGER.info("urls: " + url.toString());
 			LOGGER.info("class: " + className);
 			aClass = loader.loadClass(className);
@@ -97,7 +86,7 @@ public final class DslGenerator {
         return aClass;
 	}
 
-	static List<DslField> getFields(Class<?> aClass) {
+	List<DslField> getFields(Class<?> aClass) {
 		Field[] fields = FieldUtils.getAllFields(aClass);
 		List<DslField> dslFields = new ArrayList<DslField>();
 		for (Field field : fields) {
@@ -110,7 +99,7 @@ public final class DslGenerator {
 		return dslFields;
 	}
 
-	private static String getGeneratorValue(Field field) {
+	String getGeneratorValue(Field field) {
 		if (field.getType().equals(int.class) || field.getType().equals(Integer.class) ||
 				field.getType().equals(short.class) || field.getType().equals(Short.class)) {
 			return "RandomUtils.nextInt(0, 10)";
@@ -133,7 +122,7 @@ public final class DslGenerator {
 		return "null";
 	}
 
-	static Set<Class<?>> getImports(List<DslField> fields) {
+	Set<Class<?>> getImports(List<DslField> fields) {
 		Set<Class<?>> imports  = new TreeSet<Class<?>>(new ClassComparator());
 		for (DslField dslField : fields) {
 			if (!dslField.getField().getType().isPrimitive()) {
@@ -145,11 +134,10 @@ public final class DslGenerator {
 		return imports;
 	}
 
-	static void createOutput(DslModel dslModel) {
-		//Freemarker configuration object
-        Configuration cfg = new Configuration();
-        cfg.setClassForTemplateLoading(DslGenerator.class, "/");
+	String createOutput(DslModel dslModel) {
+		String result = null;
         try {
+
             //Load template from source folder
             Template template = cfg.getTemplate("templates/dsl-template.ftl");
 
@@ -162,54 +150,31 @@ public final class DslGenerator {
             model.put("imports", dslModel.getImports());
             model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
 
-            // Console output
-            PrintWriter fileWriter = new PrintWriter(dslModel.getSourceClass().getSimpleName() + "DSL.java");
             Writer out = new StringWriter();
             template.process(model, out);
             out.flush();
-            fileWriter.print(out.toString());
-            fileWriter.close();
-            LOGGER.debug(out.toString());
+            result = out.toString();
+            LOGGER.debug(result);
             out.close();
-
-			if (commands.hasOption("ga")) {
-				template = cfg.getTemplate("templates/abstract-dsl.ftl");
-				out = new StringWriter();
-				fileWriter = new PrintWriter("AbstractDSL.java");
-				template.process(model, out);
-				out.flush();
-				fileWriter.print(out.toString());
-				fileWriter.close();
-				out.close();
-			}
-
         } catch (IOException e) {
             e.printStackTrace();
         } catch (TemplateException e) {
             e.printStackTrace();
         }
+		return result;
 	}
 
-	static void readInputParameters(String[] args) {
-		CommandLineParser parser = new BasicParser();
-		Options options = new Options();
-		options.addOption("d", true, "the directory where the root package is located, ie {root-package-dir}/com/example/SomeClass. defaults to current directory.");
-		options.addOption("c", "class", true, "fully qualified name of source class ie. com.example.SomeClass.");
-		options.addOption("h", false, "print this message");
-		options.addOption("ga", "generate-abstract", false, "generate abstract base class");
-
-		try {
-			// parse the command line arguments
-			commands = parser.parse(options, args);
-
-			if (commands.getOptionValue("c") == null ) {
-				HelpFormatter formatter = new HelpFormatter();
-				formatter.printHelp( USAGE, options );
-				System.exit(1);
-			}
-		} catch (ParseException exp) {
-			LOGGER.error("Unexpected exception:" + exp.getMessage());
-		}
+	public String generateAbstractDSL() throws IOException, TemplateException {
+		String result = null;
+		Map<String, Object> model = new HashMap<String, Object>();
+		Template template = cfg.getTemplate("templates/abstract-dsl.ftl");
+		Writer out = new StringWriter();
+		model.put("packageName", dslModel.getSourceClass().getPackage().getName());
+		template.process(model, out);
+		out.flush();
+		result = out.toString();
+		out.close();
+		return result;
 	}
 
 	private static class ClassComparator implements Comparator<Class<?>> {

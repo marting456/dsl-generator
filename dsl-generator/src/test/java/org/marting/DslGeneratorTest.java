@@ -20,11 +20,12 @@ public class DslGeneratorTest {
 	private static final String TEST_CLASS_NAME = "org.marting.data.TestDomainModelChild";
 
 	private Class<?> aClass;
+	private DslGenerator dslGenerator = new DslGenerator();
 
 	@Before
 	public void init() {
 		try {
-			aClass = DslGenerator.loadSourceClass(TEST_CLASS_NAME);
+			aClass = dslGenerator.loadSourceClass(TEST_CLASS_NAME, "");
 		} catch (Exception e) {
 			fail("Unbable to load class" + e.toString());
 		}
@@ -32,7 +33,7 @@ public class DslGeneratorTest {
 
 	@Test
 	public void shouldReadFields() throws ClassNotFoundException  {
-		List<DslField> dslFields = DslGenerator.getFields(aClass);
+		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getType().equals(Long.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Short.class)).count(), equalTo(2L));
@@ -50,9 +51,14 @@ public class DslGeneratorTest {
 
 	@Test
 	public void shouldReadParentFields() throws ClassNotFoundException  {
-		List<DslField> dslFields = DslGenerator.getFields(aClass);
+		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringFieldP")).count(), equalTo(1L));
+	}
+
+	@Test
+	public void shouldCompileGeneratedClass() {
+
 	}
 }

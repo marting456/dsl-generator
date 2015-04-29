@@ -13,7 +13,6 @@ repositories {
 dependencies {
     compile 'commons-cli:commons-cli:1.2'
     compile 'org.freemarker:freemarker:2.3.14'
-    compile 'org.slf4j:log4j-over-slf4j:1.7.7'
     compile 'org.slf4j:slf4j-simple:1.7.7'
     compile 'org.apache.commons:commons-lang3:3.4'    
     compile 'commons-collections:commons-collections:3.2.1'
@@ -24,7 +23,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'org.marting.DslGenerator'
+        attributes 'Main-Class': 'org.marting.Main'
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
