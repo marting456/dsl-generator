@@ -31,6 +31,7 @@ import freemarker.template.TemplateException;
 
 public final class DslGenerator {
 
+	public static final String ABSTRACT_DSL_NAME = "AbstractDSL";
 	private static final Logger LOGGER = LoggerFactory.getLogger(DslGenerator.class);
 
 	private DslModel dslModel;

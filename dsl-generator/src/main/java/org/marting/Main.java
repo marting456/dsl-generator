@@ -49,7 +49,7 @@ public class Main {
         fileWriter.close();
 		if (commands.hasOption("ga")) {
 			String abstractDsl = dslGenerator.generateAbstractDSL();
-	        fileWriter = new PrintWriter("AbstractDSL.java");
+	        fileWriter = new PrintWriter(DslGenerator.ABSTRACT_DSL_NAME + ".java");
 	        fileWriter.print(abstractDsl);
 	        fileWriter.flush();
 	        fileWriter.close();
