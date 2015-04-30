@@ -15,17 +15,18 @@
 - change to java streams sublists
 - refactor to non-static
 - make debug optional
+- compile result
+- add checkstyle to project
 
 TODO
-+ compile result
 + tests for generated values
++ handle lists
++ handle arrays
++ handle sets
 
 BACKLOG
 + fix debug messages
 + classpath input
-+ handle lists
-+ handle arrays
-+ handle sets
 + constants for date, int, etc
 + add custom Type objects
 + generate meaningful random values
