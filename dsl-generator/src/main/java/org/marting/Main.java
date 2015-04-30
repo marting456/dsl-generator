@@ -32,7 +32,6 @@ public class Main {
 		CommandLine commands = readInputParameters(args);
 		if (commands.hasOption("v")) {
 			System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "debug");
-			System.out.println("setting log level");
 		}
 		LOGGER = LoggerFactory.getLogger(Main.class);
 		LOGGER.debug("Starting...");
