@@ -4,7 +4,7 @@ package ${packageName};
 import ${class.name};
 </#list>
 
-public class ${dslClassName}() extends AbstractDSL<${dslClassName}, ${className}> {
+public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> {
           
     // members        
     <#list dslFields as dslField>
@@ -19,7 +19,7 @@ public class ${dslClassName}() extends AbstractDSL<${dslClassName}, ${className}
         return new ${dslClassName}();
     }
     
-    public static ${className} build() {
+    public ${className} build() {
         ${className} ${classObj} = new ${className}();        
         <#list dslFields as dslField>
         ${classObj}.${dslField.setterMethod}(this.${dslField.field.name});
@@ -28,7 +28,7 @@ public class ${dslClassName}() extends AbstractDSL<${dslClassName}, ${className}
     }
     
     <#list dslFields as dslField>
-    public static ${dslClassName} ${dslField.withMethod}(${dslField.field.type.simpleName} ${dslField.field.name}){
+    public ${dslClassName} ${dslField.withMethod}(${dslField.field.type.simpleName} ${dslField.field.name}){
         this.${dslField.field.name} = ${dslField.field.name};
         return this;
     }

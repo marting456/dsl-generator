@@ -35,6 +35,7 @@ public final class DslGenerator {
 
 	private DslModel dslModel;
 	private Configuration cfg;
+	private String dslClassName;
 
 	public DslGenerator() {
 		//Freemarker configuration object
@@ -47,11 +48,12 @@ public final class DslGenerator {
 	    dslModel.setSourceClass(loadSourceClass(className, dir));
 	    dslModel.setFields(getFields(dslModel.getSourceClass()));
 	    dslModel.setImports(getImports(dslModel.getFields()));
+	    this.dslClassName = dslModel.getSourceClass().getSimpleName() + "DSL";
 	    return createOutput(dslModel);
 	}
 
 	public String getDslClassName() {
-		return dslModel.getSourceClass().getSimpleName();
+		return dslClassName;
 	}
 
 	Class<?> loadSourceClass(String className, String dir) throws ClassNotFoundException {
@@ -100,9 +102,11 @@ public final class DslGenerator {
 	}
 
 	String getGeneratorValue(Field field) {
-		if (field.getType().equals(int.class) || field.getType().equals(Integer.class) ||
-				field.getType().equals(short.class) || field.getType().equals(Short.class)) {
+		if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
 			return "RandomUtils.nextInt(0, 10)";
+		}
+		if (field.getType().equals(short.class) || field.getType().equals(Short.class)) {
+			return "(short) RandomUtils.nextInt(0, 10)";
 		}
 		if (field.getType().equals(long.class) || field.getType().equals(Long.class)) {
 			return "RandomUtils.nextLong(0, 10)";
@@ -111,7 +115,7 @@ public final class DslGenerator {
 			return "RandomUtils.nextDouble(0.0, 10.0)";
 		}
 		if (field.getType().equals(float.class) || field.getType().equals(Float.class)) {
-			return "RandomUtils.nextFloat(0.0, 10.0)";
+			return "RandomUtils.nextFloat(0.0f, 10.0f)";
 		}
 		if (field.getType().equals(String.class)) {
 			return "RandomStringUtils.randomAlphabetic(10)";
@@ -145,7 +149,7 @@ public final class DslGenerator {
             Map<String, Object> model = new HashMap<String, Object>();
             model.put("className", dslModel.getSourceClass().getSimpleName());
             model.put("packageName", dslModel.getSourceClass().getPackage().getName());
-            model.put("dslClassName", dslModel.getSourceClass().getSimpleName() + "DSL");
+            model.put("dslClassName", this.dslClassName);
             model.put("dslFields", dslModel.getFields());
             model.put("imports", dslModel.getImports());
             model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
