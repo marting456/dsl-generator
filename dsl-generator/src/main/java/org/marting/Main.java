@@ -25,7 +25,7 @@ import freemarker.template.TemplateException;
 public class Main {
 
 	private static Logger LOGGER;
-	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [-d /path/to/class/package]";
+	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]";
 
 	public static void main(String[] args) throws ClassNotFoundException, IOException, TemplateException {
 
@@ -74,6 +74,7 @@ public class Main {
 			commands = parser.parse(options, args);
 
 			if (commands.getOptionValue("c") == null ) {
+				LOGGER.error("Missing input class name.");
 				formatter.printHelp( USAGE, options );
 				System.exit(1);
 			}
