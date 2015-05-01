@@ -10,9 +10,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +28,8 @@ import javax.tools.JavaFileObject;
 import javax.tools.StandardJavaFileManager;
 import javax.tools.ToolProvider;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -76,8 +82,41 @@ public class DslGeneratorTest {
 		String dslSourceCode = dslGenerator.generateDSL(TEST_CLASS_NAME, "");
 		String absDslSourceCode = dslGenerator.generateAbstractDSL();
 		assertThat(dslSourceCode, notNullValue());
-        File file1 = new File(dslGenerator.getDslClassName() + ".java");
-        File file2 = new File("AbstractDSL.java");
+        File[] filesToCompile = prepareCompilationUnits(dslSourceCode, absDslSourceCode);
+
+        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
+        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
+        StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
+        Iterable<? extends JavaFileObject> compilationUnits =
+                fileManager.getJavaFileObjectsFromFiles(Arrays.asList(filesToCompile));
+        boolean compilationResult = compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits).call();
+        // assert no compilation errors
+        assertThat(compilationResult, is(true));
+        assertThat(diagnostics.getDiagnostics().size(), is(0));
+        URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { new File(".").toURI().toURL() });
+        Class<?> clazz = classLoader.loadClass("org.marting.data.TestDomainModelChildDSL");
+
+        List<Field> fields = Arrays.asList(FieldUtils.getAllFields(clazz));
+		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("stringFieldP")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("intField")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("stringField")).count(), equalTo(1L));
+
+		List<Method> methods = Arrays.asList(clazz.getMethods());
+		assertThat(methods.stream().filter(s -> s.getName().equals("withIntFieldP")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withStringFieldP")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withIntField")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withStringField")).count(), equalTo(1L));
+
+		File root = new File("org");
+        FileUtils.deleteDirectory(root);
+	}
+
+	private File[] prepareCompilationUnits(String dslSourceCode, String absDslSourceCode) throws FileNotFoundException {
+		File file1 = new File("org/marting/data/" + dslGenerator.getDslClassName() + ".java");
+        File file2 = new File("org/marting/data/AbstractDSL.java");
+        file1.getParentFile().mkdirs();
+        file2.getParentFile().mkdirs();
         file1.deleteOnExit();
         file2.deleteOnExit();
         PrintWriter writer1 = new PrintWriter(file1);
@@ -89,19 +128,6 @@ public class DslGeneratorTest {
         writer2.flush();
         writer2.close();
         File[] filesToCompile = { file1, file2};
-
-        JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
-        DiagnosticCollector<JavaFileObject> diagnostics = new DiagnosticCollector<JavaFileObject>();
-        StandardJavaFileManager fileManager = compiler.getStandardFileManager(diagnostics, null, null);
-        Iterable<? extends JavaFileObject> compilationUnits =
-                fileManager.getJavaFileObjectsFromFiles(Arrays.asList(filesToCompile));
-        boolean compilationResult = compiler.getTask(null, fileManager, diagnostics, null, null, compilationUnits).call();
-        // assert no compilation errors
-        assertThat(compilationResult, is(true));
-        assertThat(diagnostics.getDiagnostics().size(), is(0));
-        File file1Result = new File(dslGenerator.getDslClassName() + ".class");
-        File file2Result = new File("AbstractDSL.class");
-        file1Result.delete();
-        file2Result.delete();
+		return filesToCompile;
 	}
 }

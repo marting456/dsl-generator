@@ -17,9 +17,9 @@
 - make debug optional
 - compile result
 - add checkstyle to project
+- tests for generated values
 
 TODO
-+ tests for generated values
 + handle lists
 + handle arrays
 + handle sets
