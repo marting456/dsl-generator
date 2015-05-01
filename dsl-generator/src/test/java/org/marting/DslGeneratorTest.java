@@ -38,6 +38,7 @@ import freemarker.template.TemplateException;
 public class DslGeneratorTest {
 
 	private static final String TEST_CLASS_NAME = "org.marting.data.TestDomainModelChild";
+	private static final String TEST_PACKAGE_DIR = "org/marting/data/";
 
 	private Class<?> aClass;
 	private DslGenerator dslGenerator = new DslGenerator();
@@ -94,7 +95,7 @@ public class DslGeneratorTest {
         assertThat(compilationResult, is(true));
         assertThat(diagnostics.getDiagnostics().size(), is(0));
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { new File(".").toURI().toURL() });
-        Class<?> clazz = classLoader.loadClass("org.marting.data.TestDomainModelChildDSL");
+        Class<?> clazz = classLoader.loadClass(TEST_CLASS_NAME + "DSL");
 
         List<Field> fields = Arrays.asList(FieldUtils.getAllFields(clazz));
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
@@ -113,8 +114,8 @@ public class DslGeneratorTest {
 	}
 
 	private File[] prepareCompilationUnits(String dslSourceCode, String absDslSourceCode) throws FileNotFoundException {
-		File file1 = new File("org/marting/data/" + dslGenerator.getDslClassName() + ".java");
-        File file2 = new File("org/marting/data/AbstractDSL.java");
+		File file1 = new File(TEST_PACKAGE_DIR + dslGenerator.getDslClassName() + ".java");
+        File file2 = new File(TEST_PACKAGE_DIR + DslGenerator.ABSTRACT_DSL_NAME + ".java");
         file1.getParentFile().mkdirs();
         file2.getParentFile().mkdirs();
         file1.deleteOnExit();
