@@ -24,9 +24,9 @@
 - handle sets
 - handle arrays
 - move generators to separate class
+- dsl field factory
 
 TODO
-+ dsl field factory
 + initialize arrays
 + initialize lists
 + fix debug messages

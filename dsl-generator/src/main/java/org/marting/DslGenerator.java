@@ -78,13 +78,12 @@ public final class DslGenerator {
         return aClass;
 	}
 
-	List<DslField> getFields(Class<?> aClass) throws UnsupportedType {
+	List<DslField> getFields(Class<?> aClass) throws UnsupportedType, ClassNotFoundException {
 		Field[] fields = FieldUtils.getAllFields(aClass);
 		List<DslField> dslFields = new ArrayList<DslField>();
 		for (Field field : fields) {
 			if (!(Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()))) {
-				DslField dslField = new DslField(field);
-				dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
+				DslField dslField = DslFieldFactory.buildDslField(field);
 				dslFields.add(dslField);
 			}
 		}
