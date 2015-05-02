@@ -18,13 +18,13 @@
 - compile result
 - add checkstyle to project
 - tests for generated values
+- handle lists
+- unsupported type exception
+- test for unsupported type
 
 TODO
-+ handle lists
-+ handle arrays
 + handle sets
-+ unsupported type exception
-+ test for unsupported type
++ handle arrays
 
 BACKLOG
 + fix debug messages
