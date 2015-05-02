@@ -26,6 +26,7 @@
 - move generators to separate class
 
 TODO
++ dsl field factory
 + initialize arrays
 + initialize lists
 + fix debug messages
