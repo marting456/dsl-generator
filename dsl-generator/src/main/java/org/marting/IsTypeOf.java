@@ -21,10 +21,10 @@ public class IsTypeOf implements TemplateMethodModelEx {
             throw new TemplateModelException("Wrong arguments");
         }
         if (! (args.get(0) instanceof BeanModel)) {
-            throw new TemplateModelException("First argument must be a bean model. Was: " + args.get(0).getClass());
+            throw new TemplateModelException("First argument must be a BeanModel. Was: " + args.get(0).getClass());
         }
         if (! (((BeanModel) args.get(0)).getWrappedObject() instanceof DslField)) {
-            throw new TemplateModelException("First argument must be a bean model. Was: " + args.get(0).getClass());
+            throw new TemplateModelException("First argument must be a DslField. Was: " + args.get(0).getClass());
         }
         DslField field = (DslField) ((BeanModel) args.get(0)).getWrappedObject();
         String type = args.get(1).toString();
