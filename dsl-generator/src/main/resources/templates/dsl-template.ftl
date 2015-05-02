@@ -8,7 +8,7 @@ public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> 
           
     // members        
     <#list dslFields as dslField>
-    private ${dslField.field.type.simpleName} ${dslField.field.name} = ${dslField.generatorValue};
+    private ${dslField.type} ${dslField.field.name} = ${dslField.generatorValue};
     </#list>
     
     // constructor
@@ -28,7 +28,7 @@ public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> 
     }
     
     <#list dslFields as dslField>
-    public ${dslClassName} ${dslField.withMethod}(${dslField.field.type.simpleName} ${dslField.field.name}){
+    public ${dslClassName} ${dslField.withMethod}(${dslField.type} ${dslField.field.name}){
         this.${dslField.field.name} = ${dslField.field.name};
         return this;
     }

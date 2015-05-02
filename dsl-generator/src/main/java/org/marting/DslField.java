@@ -4,6 +4,8 @@
 package org.marting;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import org.apache.commons.lang3.text.WordUtils;
 
@@ -16,6 +18,18 @@ public class DslField {
 	Field field;
 	String generatorValue;
 
+	public String getType() throws UnsupportedType {
+		Type type = field.getGenericType();
+	    if (type instanceof ParameterizedType) {
+	        ParameterizedType pType = (ParameterizedType) type;
+	        String pTypeStr = pType.getActualTypeArguments()[0].getTypeName();
+	        pTypeStr = pTypeStr.substring(pTypeStr.lastIndexOf(".") + 1);
+	        return field.getType().getSimpleName() + "<" + pTypeStr + ">";
+	    } else {
+	        return field.getType().getSimpleName();
+	    }
+	}
+
 	public String getGeneratorValue() {
 		return generatorValue;
 	}
@@ -24,10 +38,16 @@ public class DslField {
 		this.generatorValue = generatorValue;
 	}
 
-	public DslField(Field field) {
+	public DslField(Field field) throws UnsupportedType {
+		Type type = field.getGenericType();
+	    if (type instanceof ParameterizedType) {
+	        ParameterizedType pType = (ParameterizedType) type;
+	        if (pType.getActualTypeArguments().length > 1) {
+	        	throw new UnsupportedType(field);
+	        }
+	    }
 		this.field = field;
 	}
-
 	public Field getField() {
 		return field;
 	}

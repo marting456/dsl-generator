@@ -27,7 +27,7 @@ public class Main {
 	private static Logger LOGGER;
 	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]";
 
-	public static void main(String[] args) throws ClassNotFoundException, IOException, TemplateException {
+	public static void main(String[] args) throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
 
 		CommandLine commands = readInputParameters(args);
 		if (commands.hasOption("v")) {

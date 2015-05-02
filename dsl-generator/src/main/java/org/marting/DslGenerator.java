@@ -44,7 +44,7 @@ public final class DslGenerator {
         this.cfg.setClassForTemplateLoading(DslGenerator.class, "/");
 	}
 
-	public String generateDSL(String className, String dir) throws ClassNotFoundException {
+	public String generateDSL(String className, String dir) throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
 		dslModel = new DslModel();
 	    dslModel.setSourceClass(loadSourceClass(className, dir));
 	    dslModel.setFields(getFields(dslModel.getSourceClass()));
@@ -57,39 +57,29 @@ public final class DslGenerator {
 		return dslClassName;
 	}
 
-	Class<?> loadSourceClass(String className, String dir) throws ClassNotFoundException {
+	Class<?> loadSourceClass(String className, String dir) throws ClassNotFoundException, MalformedURLException {
 
 		File file = new File(dir);
 		Class<?> aClass = null;
 		URLClassLoader loader = null;
 
-		try {
-			URL url =  file.toURI().toURL();
-			URL[] urls = new URL[] { url };
-			// Create a new class loader with the directory
-			loader = new URLClassLoader(urls);
-			LOGGER.info("urls: " + url.toString());
-			LOGGER.info("class: " + className);
-			aClass = loader.loadClass(className);
-		} catch (MalformedURLException e) {
-	        LOGGER.error(e.toString());
-	        System.exit(1);
-		} catch (ClassNotFoundException e) {
-	        LOGGER.error(e.toString());
-	        System.exit(1);
-		} finally {
-			try {
-				loader.close();
-			} catch (IOException e) {
-				LOGGER.error(e.getMessage());
-			}
-		}
-
+		URL url =  file.toURI().toURL();
+		URL[] urls = new URL[] { url };
+		// Create a new class loader with the directory
+		loader = new URLClassLoader(urls);
+		LOGGER.info("urls: " + url.toString());
+		LOGGER.info("class: " + className);
+		aClass = loader.loadClass(className);
         LOGGER.debug("aClass.getName() = " + aClass.getName());
+        try {
+			loader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         return aClass;
 	}
 
-	List<DslField> getFields(Class<?> aClass) {
+	List<DslField> getFields(Class<?> aClass) throws UnsupportedType {
 		Field[] fields = FieldUtils.getAllFields(aClass);
 		List<DslField> dslFields = new ArrayList<DslField>();
 		for (Field field : fields) {
@@ -139,33 +129,27 @@ public final class DslGenerator {
 		return imports;
 	}
 
-	String createOutput(DslModel dslModel) {
+	String createOutput(DslModel dslModel) throws IOException, TemplateException {
 		String result = null;
-        try {
 
-            //Load template from source folder
-            Template template = cfg.getTemplate("templates/dsl-template.ftl");
+        //Load template from source folder
+        Template template = cfg.getTemplate("templates/dsl-template.ftl");
 
-            // Build the data-model
-            Map<String, Object> model = new HashMap<String, Object>();
-            model.put("className", dslModel.getSourceClass().getSimpleName());
-            model.put("packageName", dslModel.getSourceClass().getPackage().getName());
-            model.put("dslClassName", this.dslClassName);
-            model.put("dslFields", dslModel.getFields());
-            model.put("imports", dslModel.getImports());
-            model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
+        // Build the data-model
+        Map<String, Object> model = new HashMap<String, Object>();
+        model.put("className", dslModel.getSourceClass().getSimpleName());
+        model.put("packageName", dslModel.getSourceClass().getPackage().getName());
+        model.put("dslClassName", this.dslClassName);
+        model.put("dslFields", dslModel.getFields());
+        model.put("imports", dslModel.getImports());
+        model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
 
-            Writer out = new StringWriter();
-            template.process(model, out);
-            out.flush();
-            result = out.toString();
-            LOGGER.debug(result);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TemplateException e) {
-            e.printStackTrace();
-        }
+        Writer out = new StringWriter();
+        template.process(model, out);
+        out.flush();
+        result = out.toString();
+        LOGGER.debug(result);
+        out.close();
 		return result;
 	}
 

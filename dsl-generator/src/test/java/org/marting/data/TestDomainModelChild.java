@@ -4,15 +4,21 @@
 package org.marting.data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author martin
  *
  */
-@SuppressWarnings("unused")
 public class TestDomainModelChild extends TestDomainModelParent {
 
-	private static final String STATIC_FINAL_FIELD = "staticFinalField";
+	public List<String> getStringList() {
+		return stringList;
+	}
+	public void setStringList(List<String> stringList) {
+		this.stringList = stringList;
+	}
+	public static final String STATIC_FINAL_FIELD = "staticFinalField";
 	private int intField;
 	private double doubleField;
 	private float floatField;
@@ -25,6 +31,8 @@ public class TestDomainModelChild extends TestDomainModelParent {
 	private Long longObjField;
 	private Short shortObjField;
 	private Date dateObjField;
+
+	private List<String> stringList;
 
 	public int getIntField() {
 		return intField;

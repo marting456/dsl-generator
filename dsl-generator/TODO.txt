@@ -23,6 +23,8 @@ TODO
 + handle lists
 + handle arrays
 + handle sets
++ unsupported type exception
++ test for unsupported type
 
 BACKLOG
 + fix debug messages

@@ -38,6 +38,7 @@ import freemarker.template.TemplateException;
 public class DslGeneratorTest {
 
 	private static final String TEST_CLASS_NAME = "org.marting.data.TestDomainModelChild";
+	private static final String TEST_CLASS_NAME_UNSUPPORTED = "org.marting.data.TestDomainModelChildUnsupported";
 	private static final String TEST_PACKAGE_DIR = "org/marting/data/";
 
 	private Class<?> aClass;
@@ -53,7 +54,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldReadFields() throws ClassNotFoundException  {
+	public void shouldReadFields() throws ClassNotFoundException, UnsupportedType  {
 		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getType().equals(Long.class)).count(), equalTo(2L));
@@ -71,7 +72,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldReadParentFields() throws ClassNotFoundException  {
+	public void shouldReadParentFields() throws ClassNotFoundException, UnsupportedType  {
 		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
@@ -79,7 +80,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldCompileGeneratedClass() throws ClassNotFoundException, IOException, TemplateException {
+	public void shouldCompileGeneratedClass() throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
 		String dslSourceCode = dslGenerator.generateDSL(TEST_CLASS_NAME, "");
 		String absDslSourceCode = dslGenerator.generateAbstractDSL();
 		assertThat(dslSourceCode, notNullValue());
@@ -111,6 +112,11 @@ public class DslGeneratorTest {
 
 		File root = new File("org");
         FileUtils.deleteDirectory(root);
+	}
+
+	@Test(expected = UnsupportedType.class)
+	public void shouldThrowExceptionForUnsupportedClass() throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
+		dslGenerator.generateDSL(TEST_CLASS_NAME_UNSUPPORTED, "");
 	}
 
 	private File[] prepareCompilationUnits(String dslSourceCode, String absDslSourceCode) throws FileNotFoundException {
