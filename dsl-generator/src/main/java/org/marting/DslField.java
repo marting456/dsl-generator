@@ -18,6 +18,16 @@ public class DslField {
 	Field field;
 	String generatorValue;
 
+	public Class<?> getTypeParameter() throws ClassNotFoundException {
+		Type type = field.getGenericType();
+	    if (type instanceof ParameterizedType) {
+	        ParameterizedType pType = (ParameterizedType) type;
+	        return Class.forName(pType.getActualTypeArguments()[0].getTypeName());
+	    } else {
+	        return null;
+	    }
+	}
+
 	public String getType() throws UnsupportedType {
 		Type type = field.getGenericType();
 	    if (type instanceof ParameterizedType) {

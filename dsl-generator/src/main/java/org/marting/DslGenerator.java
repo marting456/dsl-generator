@@ -117,11 +117,20 @@ public final class DslGenerator {
 		return "null";
 	}
 
-	Set<Class<?>> getImports(List<DslField> fields) {
+	Set<Class<?>> getImports(List<DslField> fields) throws ClassNotFoundException {
 		Set<Class<?>> imports  = new TreeSet<Class<?>>(new ClassComparator());
 		for (DslField dslField : fields) {
 			if (!dslField.getField().getType().isPrimitive()) {
-				imports.add(dslField.getField().getType());
+				// check if this field is generic parameterized
+				Class<?> typeParameter = dslField.getTypeParameter();
+				if (typeParameter != null) {
+					imports.add(typeParameter);
+					imports.add(dslField.getField().getType());
+				} else if (dslField.getField().getType().isArray()) {
+					imports.add(dslField.getField().getType().getComponentType());
+				} else {
+					imports.add(dslField.getField().getType());
+				}
 			}
 		}
 		imports.add(RandomUtils.class);

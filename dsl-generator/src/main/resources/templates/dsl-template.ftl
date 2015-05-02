@@ -28,7 +28,7 @@ public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> 
     }
     
     <#list dslFields as dslField>
-    public ${dslClassName} ${dslField.withMethod}(${dslField.type} ${dslField.field.name}){
+    public ${dslClassName} ${dslField.withMethod}(${dslField.type} ${dslField.field.name}) {
         this.${dslField.field.name} = ${dslField.field.name};
         return this;
     }

@@ -105,6 +105,7 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringField")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringList")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("integerSet")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("stringArray")).count(), equalTo(1L));
 
 		List<Method> methods = Arrays.asList(clazz.getMethods());
 		assertThat(methods.stream().filter(s -> s.getName().equals("withIntFieldP")).count(), equalTo(1L));

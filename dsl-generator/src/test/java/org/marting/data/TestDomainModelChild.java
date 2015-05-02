@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
+ *
  * @author martin
  *
  */
@@ -37,7 +38,14 @@ public class TestDomainModelChild extends TestDomainModelParent {
 	private List<String> stringList;
 	private Set<Integer> integerSet;
 	private Collection<String> stringCollection;
+	private String[] stringArray;
 
+	public String[] getStringArray() {
+		return stringArray;
+	}
+	public void setStringArray(String[] stringArray) {
+		this.stringArray = stringArray;
+	}
 	public Set<Integer> getIntegerSet() {
 		return integerSet;
 	}

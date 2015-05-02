@@ -22,13 +22,13 @@
 - unsupported type exception
 - test for unsupported type
 - handle sets
+- handle arrays
 
 TODO
-+ handle arrays
-
-BACKLOG
 + move generators to separate class
 + fix debug messages
+
+BACKLOG
 + classpath input
 + constants for date, int, etc
 + add custom Type objects
