@@ -18,7 +18,7 @@ public abstract class DslField {
 
 	public abstract Class<?> getTypeParameter();
 
-	public abstract String getType();
+	public abstract String getDeclaredType();
 
 	public String getGeneratorValue() {
 		return generatorValue;

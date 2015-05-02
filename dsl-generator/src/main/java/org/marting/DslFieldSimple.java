@@ -21,7 +21,7 @@ public class DslFieldSimple extends DslField {
 	}
 
 	@Override
-	public String getType() {
+	public String getDeclaredType() {
 	        return field.getType().getSimpleName();
 	}
 

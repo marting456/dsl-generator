@@ -24,6 +24,11 @@ public class DslFieldFactory {
 			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
 	        dslField.setTypeParameter(Class.forName(pType.getActualTypeArguments()[0].getTypeName()));
 			return dslField;
+	    } else if (field.getType().isArray()) {
+		    DslFieldArray dslField = new DslFieldArray(field);
+			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
+			dslField.setComponentGeneratorValue(RandomValueGenerator.getGeneratorValue(dslField.getComponentType()));
+			return dslField;
 	    } else {
 		    DslField dslField = new DslFieldSimple(field);
 			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));

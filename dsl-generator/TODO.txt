@@ -25,9 +25,10 @@
 - handle arrays
 - move generators to separate class
 - dsl field factory
+- initialize arrays
 
 TODO
-+ initialize arrays
++ tests for generated object - arrays
 + initialize lists
 + fix debug messages
 

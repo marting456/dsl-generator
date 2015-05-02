@@ -25,7 +25,7 @@ public class DslFieldFactoryTest {
 		Field field = FieldUtils.getField(clazz, "stringField", true);
 		DslField result = DslFieldFactory.buildDslField(field);
 		assertThat(result, instanceOf(DslFieldSimple.class));
-		assertThat(result.getType(), equalTo("String"));
+		assertThat(result.getDeclaredType(), equalTo("String"));
 	}
 
 	@Test
@@ -34,6 +34,15 @@ public class DslFieldFactoryTest {
 		Field field = FieldUtils.getField(clazz, "stringList", true);
 		DslField result = DslFieldFactory.buildDslField(field);
 		assertThat(result, instanceOf(DslFieldComplex.class));
-		assertThat(result.getType(), equalTo("List<String>"));
+		assertThat(result.getDeclaredType(), equalTo("List<String>"));
+	}
+
+	@Test
+	public void shouldBuildArray() throws NoSuchFieldException, ClassNotFoundException, UnsupportedType {
+		Class<TestDomainModelChild> clazz = TestDomainModelChild.class;
+		Field field = FieldUtils.getField(clazz, "stringArray", true);
+		DslField result = DslFieldFactory.buildDslField(field);
+		assertThat(result, instanceOf(DslFieldArray.class));
+		assertThat(result.getDeclaredType(), equalTo("String[]"));
 	}
 }

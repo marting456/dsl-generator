@@ -26,7 +26,7 @@ public class DslFieldComplex extends DslField {
 	}
 
 	@Override
-	public String getType() {
+	public String getDeclaredType() {
 		Type type = field.getGenericType();
 		ParameterizedType pType = (ParameterizedType) type;
 		String pTypeStr = pType.getActualTypeArguments()[0].getTypeName();

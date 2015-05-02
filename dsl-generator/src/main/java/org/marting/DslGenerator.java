@@ -25,6 +25,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
+import freemarker.template.SimpleHash;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
@@ -94,12 +95,10 @@ public final class DslGenerator {
 		Set<Class<?>> imports  = new TreeSet<Class<?>>(new ClassComparator());
 		for (DslField dslField : fields) {
 			if (!dslField.getField().getType().isPrimitive()) {
-				// check if this field is generic parameterized
-				Class<?> typeParameter = dslField.getTypeParameter();
-				if (typeParameter != null) {
-					imports.add(typeParameter);
+				if (dslField instanceof DslFieldComplex) {
+					imports.add(dslField.getTypeParameter());
 					imports.add(dslField.getField().getType());
-				} else if (dslField.getField().getType().isArray()) {
+				} else if (dslField instanceof DslFieldArray) {
 					imports.add(dslField.getField().getType().getComponentType());
 				} else {
 					imports.add(dslField.getField().getType());
@@ -118,19 +117,20 @@ public final class DslGenerator {
         Template template = cfg.getTemplate("templates/dsl-template.ftl");
 
         // Build the data-model
-        Map<String, Object> model = new HashMap<String, Object>();
+        SimpleHash model = new SimpleHash();
         model.put("className", dslModel.getSourceClass().getSimpleName());
         model.put("packageName", dslModel.getSourceClass().getPackage().getName());
         model.put("dslClassName", this.dslClassName);
         model.put("dslFields", dslModel.getFields());
         model.put("imports", dslModel.getImports());
         model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
+        model.put("isTypeOf", new IsTypeOf());
 
         Writer out = new StringWriter();
         template.process(model, out);
         out.flush();
         result = out.toString();
-        LOGGER.debug(result);
+        LOGGER.debug("\n" + result);
         out.close();
 		return result;
 	}
