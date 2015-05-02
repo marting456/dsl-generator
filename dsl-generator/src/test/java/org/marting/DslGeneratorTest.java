@@ -103,12 +103,15 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringFieldP")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("intField")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringField")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("stringList")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getName().equals("integerSet")).count(), equalTo(1L));
 
 		List<Method> methods = Arrays.asList(clazz.getMethods());
 		assertThat(methods.stream().filter(s -> s.getName().equals("withIntFieldP")).count(), equalTo(1L));
 		assertThat(methods.stream().filter(s -> s.getName().equals("withStringFieldP")).count(), equalTo(1L));
 		assertThat(methods.stream().filter(s -> s.getName().equals("withIntField")).count(), equalTo(1L));
 		assertThat(methods.stream().filter(s -> s.getName().equals("withStringField")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withStringList")).count(), equalTo(1L));
 
 		File root = new File("org");
         FileUtils.deleteDirectory(root);

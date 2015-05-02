@@ -3,8 +3,10 @@
  */
 package org.marting.data;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author martin
@@ -33,7 +35,21 @@ public class TestDomainModelChild extends TestDomainModelParent {
 	private Date dateObjField;
 
 	private List<String> stringList;
+	private Set<Integer> integerSet;
+	private Collection<String> stringCollection;
 
+	public Set<Integer> getIntegerSet() {
+		return integerSet;
+	}
+	public void setIntegerSet(Set<Integer> integerSet) {
+		this.integerSet = integerSet;
+	}
+	public Collection<String> getStringCollection() {
+		return stringCollection;
+	}
+	public void setStringCollection(Collection<String> stringCollection) {
+		this.stringCollection = stringCollection;
+	}
 	public int getIntField() {
 		return intField;
 	}

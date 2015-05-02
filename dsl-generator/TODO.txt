@@ -21,12 +21,13 @@
 - handle lists
 - unsupported type exception
 - test for unsupported type
+- handle sets
 
 TODO
-+ handle sets
 + handle arrays
 
 BACKLOG
++ move generators to separate class
 + fix debug messages
 + classpath input
 + constants for date, int, etc
