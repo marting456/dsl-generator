@@ -18,6 +18,7 @@ import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -106,6 +107,9 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringList")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("integerSet")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringArray")).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(String[].class)).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(List.class)).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(Collection.class)).count(), equalTo(1L));
 
 		List<Method> methods = Arrays.asList(clazz.getMethods());
 		assertThat(methods.stream().filter(s -> s.getName().equals("withIntFieldP")).count(), equalTo(1L));

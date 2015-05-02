@@ -12,7 +12,6 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,36 +84,11 @@ public final class DslGenerator {
 		for (Field field : fields) {
 			if (!(Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()))) {
 				DslField dslField = new DslField(field);
-				dslField.setGeneratorValue(getGeneratorValue(field));
+				dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
 				dslFields.add(dslField);
 			}
 		}
 		return dslFields;
-	}
-
-	String getGeneratorValue(Field field) {
-		if (field.getType().equals(int.class) || field.getType().equals(Integer.class)) {
-			return "RandomUtils.nextInt(0, 10)";
-		}
-		if (field.getType().equals(short.class) || field.getType().equals(Short.class)) {
-			return "(short) RandomUtils.nextInt(0, 10)";
-		}
-		if (field.getType().equals(long.class) || field.getType().equals(Long.class)) {
-			return "RandomUtils.nextLong(0, 10)";
-		}
-		if (field.getType().equals(double.class) || field.getType().equals(Double.class)) {
-			return "RandomUtils.nextDouble(0.0, 10.0)";
-		}
-		if (field.getType().equals(float.class) || field.getType().equals(Float.class)) {
-			return "RandomUtils.nextFloat(0.0f, 10.0f)";
-		}
-		if (field.getType().equals(String.class)) {
-			return "RandomStringUtils.randomAlphabetic(10)";
-		}
-		if (field.getType().equals(Date.class)) {
-			return "new Date(RandomUtils.nextLong(0 ,1000 * 60 * 60 * 60 * 24 * 30 * 365 * 30))";
-		}
-		return "null";
 	}
 
 	Set<Class<?>> getImports(List<DslField> fields) throws ClassNotFoundException {

@@ -23,9 +23,11 @@
 - test for unsupported type
 - handle sets
 - handle arrays
+- move generators to separate class
 
 TODO
-+ move generators to separate class
++ initialize arrays
++ initialize lists
 + fix debug messages
 
 BACKLOG
