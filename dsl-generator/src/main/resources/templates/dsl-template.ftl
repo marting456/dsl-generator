@@ -20,19 +20,34 @@ public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> 
     }
     
     public ${className} build() {
+        // Set simple fields
         ${className} ${classObj} = new ${className}();        
         <#list dslFields as dslField>
         <#if isTypeOf(dslField, "simple")>
         ${classObj}.${dslField.setterMethod}(this.${dslField.field.name}); 
         </#if>
         </#list>
-        
+        // Set array type fields
         <#list dslFields as dslField>
         <#if isTypeOf(dslField, "array")>
         if (this.${dslField.field.name} == null) {
             ${dslField.declaredType} ${dslField.field.name} = new ${dslField.componentType.simpleName}[10];
             for (int i=0; i < ${dslField.field.name}.length; i++) {
                 ${dslField.field.name}[i] = ${dslField.componentGeneratorValue};
+            }
+            ${classObj}.${dslField.setterMethod}(${dslField.field.name}); 
+        } else {
+            ${classObj}.${dslField.setterMethod}(this.${dslField.field.name});
+        }
+        </#if>
+        </#list>
+        // Set complex fields ie List<String>, List<Customer>
+        <#list dslFields as dslField>
+        <#if isTypeOf(dslField, "complex")>
+        if (this.${dslField.field.name} == null) {
+            ${dslField.declaredType} ${dslField.field.name} = new ${dslField.implementingClazz.simpleName}<${dslField.typeParameter.simpleName}>();
+            for (int i = 0; i < 10; i++) {
+                ${dslField.field.name}.add(${dslField.typeParameterGenerator});
             }
             ${classObj}.${dslField.setterMethod}(${dslField.field.name}); 
         } else {

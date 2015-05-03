@@ -26,10 +26,10 @@
 - move generators to separate class
 - dsl field factory
 - initialize arrays
+- initialize lists
 
 TODO
 + tests for generated object - arrays
-+ initialize lists
 + fix debug messages
 
 BACKLOG

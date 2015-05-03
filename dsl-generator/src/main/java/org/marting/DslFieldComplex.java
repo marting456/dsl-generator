@@ -15,6 +15,24 @@ import java.lang.reflect.Type;
 public class DslFieldComplex extends DslField {
 
 	protected Class<?> typeParameter;
+	protected String typeParameterGenerator;
+	protected Class<?> implementingClazz;
+
+	public Class<?> getImplementingClazz() {
+		return implementingClazz;
+	}
+
+	public void setImplementingClazz(Class<?> implementingClazz) {
+		this.implementingClazz = implementingClazz;
+	}
+
+	public String getTypeParameterGenerator() {
+		return typeParameterGenerator;
+	}
+
+	public void setTypeParameterGenerator(String typeParameterGenerator) {
+		this.typeParameterGenerator = typeParameterGenerator;
+	}
 
 	DslFieldComplex(Field field) {
 		this.field = field;

@@ -98,6 +98,7 @@ public final class DslGenerator {
 				if (dslField instanceof DslFieldComplex) {
 					imports.add(dslField.getTypeParameter());
 					imports.add(dslField.getField().getType());
+					imports.add(((DslFieldComplex) dslField).getImplementingClazz());
 				} else if (dslField instanceof DslFieldArray) {
 					imports.add(dslField.getField().getType().getComponentType());
 				} else {

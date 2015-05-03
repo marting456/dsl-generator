@@ -11,6 +11,7 @@ import java.util.Date;
  */
 public class RandomValueGenerator {
 
+
 	public static String getGeneratorValue(Field field) {
 		return getGeneratorValue(field.getType());
 	}
