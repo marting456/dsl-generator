@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.lang.reflect.Field;
@@ -8,8 +5,7 @@ import java.lang.reflect.Field;
 import org.apache.commons.lang3.text.WordUtils;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public abstract class DslField {
 

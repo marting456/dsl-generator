@@ -6,8 +6,7 @@ package org.marting;
 import java.lang.reflect.Field;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class DslFieldSimple extends DslField {
 

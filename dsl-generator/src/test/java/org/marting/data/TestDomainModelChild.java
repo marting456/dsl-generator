@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting.data;
 
 import java.util.Collection;
@@ -9,9 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 /**
- *
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class TestDomainModelChild extends TestDomainModelParent {
 

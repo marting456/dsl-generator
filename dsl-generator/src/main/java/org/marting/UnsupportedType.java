@@ -1,13 +1,9 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.lang.reflect.Field;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class UnsupportedType extends Exception {
 	private static final long serialVersionUID = 254104070069756615L;

@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.io.IOException;
@@ -17,10 +14,8 @@ import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateException;
 
-
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class Main {
 

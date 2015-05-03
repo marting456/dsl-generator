@@ -1,14 +1,10 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.util.List;
 import java.util.Set;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class DslModel {
 

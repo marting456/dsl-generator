@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import static org.hamcrest.CoreMatchers.startsWith;
@@ -14,8 +11,7 @@ import org.junit.Test;
 import org.marting.data.TestDomainModelChild;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class RandomValueGeneratorTest {
 

@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.lang.reflect.Field;
@@ -15,8 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class DslFieldFactory {
 

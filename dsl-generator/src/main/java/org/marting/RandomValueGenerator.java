@@ -1,13 +1,10 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.lang.reflect.Field;
 import java.util.Date;
 
 /**
- * @author  martin
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class RandomValueGenerator {
 

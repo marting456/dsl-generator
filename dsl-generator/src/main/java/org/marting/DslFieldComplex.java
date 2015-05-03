@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting;
 
 import java.lang.reflect.Field;
@@ -8,7 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
 /**
- * @author martin
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  *
  * Represents a field that has generic parameters such as List<String>
  */

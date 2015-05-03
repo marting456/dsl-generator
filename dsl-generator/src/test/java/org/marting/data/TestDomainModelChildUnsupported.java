@@ -1,6 +1,3 @@
-/**
- * @author Martin Gercsak - mgercsak@yahoo.com.au
- */
 package org.marting.data;
 
 import java.util.Date;
@@ -8,8 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author martin
- *
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
 public class TestDomainModelChildUnsupported extends TestDomainModelParent {
 

@@ -29,6 +29,9 @@ import freemarker.template.SimpleHash;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * @author Martin Gercsak - mgercsak@yahoo.com.au
+ */
 public final class DslGenerator {
 
 	public static final String ABSTRACT_DSL_NAME = "AbstractDSL";
