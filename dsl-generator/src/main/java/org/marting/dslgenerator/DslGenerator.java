@@ -1,4 +1,4 @@
-package org.marting;
+package org.marting.dslgenerator;
 
 import java.beans.Introspector;
 import java.io.File;
@@ -11,6 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,11 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.marting.dslgenerator.field.DslField;
+import org.marting.dslgenerator.field.DslFieldArray;
+import org.marting.dslgenerator.field.DslFieldComplex;
+import org.marting.dslgenerator.field.DslFieldFactory;
+import org.marting.dslgenerator.freemarker.IsTypeOf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,9 +74,9 @@ public final class DslGenerator {
 
 		URL url =  file.toURI().toURL();
 		URL[] urls = new URL[] { url };
+		LOGGER.debug("urls: " + Arrays.toString(urls));
 		// Create a new class loader with the directory
 		loader = new URLClassLoader(urls);
-		LOGGER.debug("urls: " + url.toString());
 		LOGGER.debug("class: " + className);
 		aClass = loader.loadClass(className);
         LOGGER.debug("aClass.getName() = " + aClass.getName());

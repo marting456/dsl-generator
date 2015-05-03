@@ -1,4 +1,4 @@
-package org.marting;
+package org.marting.dslgenerator;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
@@ -9,7 +9,13 @@ import java.util.ArrayList;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
-import org.marting.data.TestDomainModelChild;
+import org.marting.dslgenerator.UnsupportedType;
+import org.marting.dslgenerator.data.TestDomainModelChild;
+import org.marting.dslgenerator.field.DslField;
+import org.marting.dslgenerator.field.DslFieldArray;
+import org.marting.dslgenerator.field.DslFieldComplex;
+import org.marting.dslgenerator.field.DslFieldFactory;
+import org.marting.dslgenerator.field.DslFieldSimple;
 
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au

@@ -1,4 +1,4 @@
-package org.marting;
+package org.marting.dslgenerator;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -34,7 +34,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.marting.data.TestDomainModelChild;
+import org.marting.dslgenerator.data.TestDomainModelChild;
+import org.marting.dslgenerator.field.DslField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,9 +48,9 @@ public class DslGeneratorTest {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(DslGeneratorTest.class);
 
-	private static final String TEST_CLASS_NAME = "org.marting.data.TestDomainModelChild";
-	private static final String TEST_CLASS_NAME_UNSUPPORTED = "org.marting.data.TestDomainModelChildUnsupported";
-	private static final String TEST_PACKAGE_DIR = "org/marting/data/";
+	private static final String TEST_CLASS_NAME = "org.marting.dslgenerator.data.TestDomainModelChild";
+	private static final String TEST_CLASS_NAME_UNSUPPORTED = "org.marting.dslgenerator.data.TestDomainModelChildUnsupported";
+	private static final String TEST_PACKAGE_DIR = "org/marting/dslgenerator/data/";
 
 	private Class<?> aClass;
 	private DslGenerator dslGenerator = new DslGenerator();

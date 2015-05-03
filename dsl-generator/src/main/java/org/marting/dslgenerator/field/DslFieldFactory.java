@@ -1,4 +1,4 @@
-package org.marting;
+package org.marting.dslgenerator.field;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -10,6 +10,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.marting.dslgenerator.RandomValueGenerator;
+import org.marting.dslgenerator.UnsupportedType;
 
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au

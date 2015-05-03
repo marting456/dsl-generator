@@ -1,7 +1,7 @@
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
-package org.marting;
+package org.marting.dslgenerator.field;
 
 import java.lang.reflect.Field;
 

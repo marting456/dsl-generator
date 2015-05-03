@@ -1,10 +1,9 @@
 TODO
 + path input
-+ change package
 + README
++ constants for date, int, etc
 
 BACKLOG
-+ constants for date, int, etc
 + add custom Type objects
 + generate meaningful random values
 + handle enums
@@ -41,3 +40,4 @@ DONE
 - initialize lists
 - tests for generated object - arrays, list, set
 - fix debug messages
+- change package

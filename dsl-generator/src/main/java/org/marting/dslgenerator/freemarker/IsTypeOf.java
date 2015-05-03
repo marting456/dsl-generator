@@ -1,6 +1,11 @@
-package org.marting;
+package org.marting.dslgenerator.freemarker;
 
 import java.util.List;
+
+import org.marting.dslgenerator.field.DslField;
+import org.marting.dslgenerator.field.DslFieldArray;
+import org.marting.dslgenerator.field.DslFieldComplex;
+import org.marting.dslgenerator.field.DslFieldSimple;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.template.TemplateMethodModelEx;

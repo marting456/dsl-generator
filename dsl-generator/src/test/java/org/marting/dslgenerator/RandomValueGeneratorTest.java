@@ -1,4 +1,4 @@
-package org.marting;
+package org.marting.dslgenerator;
 
 import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -8,7 +8,8 @@ import java.lang.reflect.Field;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
-import org.marting.data.TestDomainModelChild;
+import org.marting.dslgenerator.RandomValueGenerator;
+import org.marting.dslgenerator.data.TestDomainModelChild;
 
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au

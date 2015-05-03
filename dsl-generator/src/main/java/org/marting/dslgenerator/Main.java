@@ -1,4 +1,4 @@
-package org.marting;
+package org.marting.dslgenerator;
 
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -1,4 +1,4 @@
-package org.marting.data;
+package org.marting.dslgenerator.data;
 
 import java.util.Collection;
 import java.util.Date;

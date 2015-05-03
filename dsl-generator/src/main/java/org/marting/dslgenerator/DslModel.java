@@ -1,7 +1,9 @@
-package org.marting;
+package org.marting.dslgenerator;
 
 import java.util.List;
 import java.util.Set;
+
+import org.marting.dslgenerator.field.DslField;
 
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au
