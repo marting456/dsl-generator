@@ -130,6 +130,10 @@ public class DslGeneratorTest {
 		assertThat(tdmc.getStringList().get(0), not(isEmptyString()));
 		assertThat(tdmc.getStringList().get(9), not(isEmptyString()));
 
+		assertThat(tdmc.getStringArray().length, is(10));
+		assertThat(tdmc.getStringArray()[0], not(isEmptyString()));
+		assertThat(tdmc.getStringArray()[9], not(isEmptyString()));
+
 		File root = new File("org");
         FileUtils.deleteDirectory(root);
 	}
