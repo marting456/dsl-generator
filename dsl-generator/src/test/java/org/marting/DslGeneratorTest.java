@@ -5,6 +5,8 @@ package org.marting;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isEmptyString;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
@@ -14,6 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -34,6 +37,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.marting.data.TestDomainModelChild;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,7 +90,10 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldCompileGeneratedClass() throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
+	public void shouldCompileGeneratedClass() throws ClassNotFoundException,
+		IOException, TemplateException, UnsupportedType, IllegalAccessException, IllegalArgumentException,
+		InvocationTargetException, NoSuchMethodException, SecurityException {
+
 		String dslSourceCode = dslGenerator.generateDSL(TEST_CLASS_NAME, "");
 		String absDslSourceCode = dslGenerator.generateAbstractDSL();
 		assertThat(dslSourceCode, notNullValue());
@@ -108,6 +115,34 @@ public class DslGeneratorTest {
         Class<?> clazz = classLoader.loadClass(TEST_CLASS_NAME + "DSL");
 
         List<Field> fields = Arrays.asList(FieldUtils.getAllFields(clazz));
+		assertFields(fields);
+
+		List<Method> methods = Arrays.asList(clazz.getMethods());
+		assertMethods(methods);
+
+		Method method = clazz.getMethod("testDomainModelChild");
+		Object dslObj = method.invoke(null);
+
+		method = dslObj.getClass().getMethod("build");
+		TestDomainModelChild tdmc = (TestDomainModelChild) method.invoke(dslObj);
+
+		assertThat(tdmc.getStringList().size(), is(10));
+		assertThat(tdmc.getStringList().get(0), not(isEmptyString()));
+		assertThat(tdmc.getStringList().get(9), not(isEmptyString()));
+
+		File root = new File("org");
+        FileUtils.deleteDirectory(root);
+	}
+
+	private void assertMethods(List<Method> methods) {
+		assertThat(methods.stream().filter(s -> s.getName().equals("withIntFieldP")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withStringFieldP")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withIntField")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withStringField")).count(), equalTo(1L));
+		assertThat(methods.stream().filter(s -> s.getName().equals("withStringList")).count(), equalTo(1L));
+	}
+
+	private void assertFields(List<Field> fields) {
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringFieldP")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("intField")).count(), equalTo(1L));
@@ -118,16 +153,6 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getType().equals(String[].class)).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(List.class)).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Collection.class)).count(), equalTo(1L));
-
-		List<Method> methods = Arrays.asList(clazz.getMethods());
-		assertThat(methods.stream().filter(s -> s.getName().equals("withIntFieldP")).count(), equalTo(1L));
-		assertThat(methods.stream().filter(s -> s.getName().equals("withStringFieldP")).count(), equalTo(1L));
-		assertThat(methods.stream().filter(s -> s.getName().equals("withIntField")).count(), equalTo(1L));
-		assertThat(methods.stream().filter(s -> s.getName().equals("withStringField")).count(), equalTo(1L));
-		assertThat(methods.stream().filter(s -> s.getName().equals("withStringList")).count(), equalTo(1L));
-
-		File root = new File("org");
-        FileUtils.deleteDirectory(root);
 	}
 
 	@Test(expected = UnsupportedType.class)

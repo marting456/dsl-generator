@@ -15,7 +15,7 @@ public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> 
     private ${dslClassName} () { };
     
     // methods    
-    public ${dslClassName} ${classObj}() {
+    public static ${dslClassName} ${classObj}() {
         return new ${dslClassName}();
     }
     

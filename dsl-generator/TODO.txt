@@ -1,3 +1,15 @@
+TODO
++ fix debug messages
+
+BACKLOG
++ classpath input
++ constants for date, int, etc
++ add custom Type objects
++ generate meaningful random values
++ handle enums
++ README
+
+DONE
 - reflect fields and store in a data structure
 - insert fields in template
 - add with methods
@@ -27,15 +39,4 @@
 - dsl field factory
 - initialize arrays
 - initialize lists
-
-TODO
-+ tests for generated object - arrays
-+ fix debug messages
-
-BACKLOG
-+ classpath input
-+ constants for date, int, etc
-+ add custom Type objects
-+ generate meaningful random values
-+ handle enums
-+ README
+- tests for generated object - arrays, list, set
