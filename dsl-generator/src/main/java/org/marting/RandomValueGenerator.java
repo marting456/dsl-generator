@@ -36,7 +36,7 @@ public class RandomValueGenerator {
 			return "RandomStringUtils.randomAlphabetic(10)";
 		}
 		if (clazz.equals(Date.class)) {
-			return "new Date(RandomUtils.nextLong(0 ,1000))";
+			return "new Date(RandomUtils.nextLong(0 ,((long) 1000 * 60 * 60 * 60 * 24 * 30 * 365 * 30)))";
 		}
 		return "null";
 	}

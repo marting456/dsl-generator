@@ -28,7 +28,6 @@ public abstract class DslField {
 		this.generatorValue = generatorValue;
 	}
 
-
 	public Field getField() {
 		return field;
 	}

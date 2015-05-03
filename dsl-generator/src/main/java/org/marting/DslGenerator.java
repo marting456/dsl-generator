@@ -67,8 +67,8 @@ public final class DslGenerator {
 		URL[] urls = new URL[] { url };
 		// Create a new class loader with the directory
 		loader = new URLClassLoader(urls);
-		LOGGER.info("urls: " + url.toString());
-		LOGGER.info("class: " + className);
+		LOGGER.debug("urls: " + url.toString());
+		LOGGER.debug("class: " + className);
 		aClass = loader.loadClass(className);
         LOGGER.debug("aClass.getName() = " + aClass.getName());
         try {

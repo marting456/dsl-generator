@@ -1,13 +1,12 @@
 TODO
-+ fix debug messages
++ path input
++ README
 
 BACKLOG
-+ classpath input
 + constants for date, int, etc
 + add custom Type objects
 + generate meaningful random values
 + handle enums
-+ README
 
 DONE
 - reflect fields and store in a data structure
@@ -40,3 +39,4 @@ DONE
 - initialize arrays
 - initialize lists
 - tests for generated object - arrays, list, set
+- fix debug messages
