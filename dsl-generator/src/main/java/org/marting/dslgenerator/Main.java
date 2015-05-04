@@ -32,7 +32,7 @@ public class Main {
 		try {
 			commands = readInputParameters(args, options);
 			if (commands.hasOption("h")) {
-				formatter.printHelp( USAGE, options );
+				formatter.printHelp(USAGE, options);
 				return;
 			}
 			if (commands.hasOption("v")) {
@@ -41,28 +41,28 @@ public class Main {
 			LOGGER = LoggerFactory.getLogger(Main.class);
 			LOGGER.debug("Starting...");
 			DslGenerator dslGenerator = new DslGenerator();
-			String className =  commands.getOptionValue("c");
+			String className = commands.getOptionValue("c");
 			String dir = ".";
 			if (commands != null && commands.hasOption("d")) {
 				dir = commands.getOptionValue("d");
 			}
 			String resultDsl = dslGenerator.generateDSL(className, dir);
 			String dslClassName = dslGenerator.getDslClassName();
-	        PrintWriter fileWriter = new PrintWriter(dslClassName + ".java");
-	        fileWriter.print(resultDsl);
-	        fileWriter.flush();
-	        fileWriter.close();
+			PrintWriter fileWriter = new PrintWriter(dslClassName + ".java");
+			fileWriter.print(resultDsl);
+			fileWriter.flush();
+			fileWriter.close();
 			if (commands.hasOption("ga")) {
 				String abstractDsl = dslGenerator.generateAbstractDSL();
-		        fileWriter = new PrintWriter(DslGenerator.ABSTRACT_DSL_NAME + ".java");
-		        fileWriter.print(abstractDsl);
-		        fileWriter.flush();
-		        fileWriter.close();
+				fileWriter = new PrintWriter(DslGenerator.ABSTRACT_DSL_NAME + ".java");
+				fileWriter.print(abstractDsl);
+				fileWriter.flush();
+				fileWriter.close();
 			}
-	        LOGGER.debug("Finished");
+			LOGGER.debug("Finished");
 		} catch (InvalidUsageException e) {
 			LOGGER.error(e.getMessage());
-			formatter.printHelp( USAGE, options );
+			formatter.printHelp(USAGE, options);
 		} catch (UnsupportedTypeException e) {
 			LOGGER.error(e.getMessage());
 		} catch (ClassNotFoundException | IOException | TemplateException e) {
