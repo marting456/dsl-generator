@@ -35,6 +35,7 @@ import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.marting.dslgenerator.data.TestDomainModelChild;
+import org.marting.dslgenerator.exception.UnsupportedTypeException;
 import org.marting.dslgenerator.field.DslField;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +66,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldReadFields() throws ClassNotFoundException, UnsupportedType  {
+	public void shouldReadFields() throws ClassNotFoundException, UnsupportedTypeException  {
 		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getType().equals(Long.class)).count(), equalTo(2L));
@@ -83,7 +84,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldReadParentFields() throws ClassNotFoundException, UnsupportedType  {
+	public void shouldReadParentFields() throws ClassNotFoundException, UnsupportedTypeException  {
 		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));
@@ -92,7 +93,7 @@ public class DslGeneratorTest {
 
 	@Test
 	public void shouldCompileGeneratedClass() throws ClassNotFoundException,
-		IOException, TemplateException, UnsupportedType, IllegalAccessException, IllegalArgumentException,
+		IOException, TemplateException, UnsupportedTypeException, IllegalAccessException, IllegalArgumentException,
 		InvocationTargetException, NoSuchMethodException, SecurityException {
 
 		String dslSourceCode = dslGenerator.generateDSL(TEST_CLASS_NAME, "");
@@ -113,6 +114,7 @@ public class DslGeneratorTest {
         assertThat(compilationResult, is(true));
         assertThat(diagnostics.getDiagnostics().size(), is(0));
         URLClassLoader classLoader = URLClassLoader.newInstance(new URL[] { new File(".").toURI().toURL() });
+        LOGGER.debug(Arrays.deepToString(classLoader.getURLs()));
         Class<?> clazz = classLoader.loadClass(TEST_CLASS_NAME + "DSL");
 
         List<Field> fields = Arrays.asList(FieldUtils.getAllFields(clazz));
@@ -160,8 +162,8 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getType().equals(Collection.class)).count(), equalTo(1L));
 	}
 
-	@Test(expected = UnsupportedType.class)
-	public void shouldThrowExceptionForUnsupportedClass() throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
+	@Test(expected = UnsupportedTypeException.class)
+	public void shouldThrowExceptionForUnsupportedClass() throws ClassNotFoundException, IOException, TemplateException, UnsupportedTypeException {
 		dslGenerator.generateDSL(TEST_CLASS_NAME_UNSUPPORTED, "");
 	}
 

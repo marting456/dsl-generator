@@ -5,10 +5,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import org.marting.dslgenerator.dataplus.TestDomainInterface;
+
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
-public class TestDomainModelChild extends TestDomainModelParent {
+public class TestDomainModelChild extends TestDomainModelParent implements TestDomainInterface {
 
 	public List<String> getStringList() {
 		return stringList;

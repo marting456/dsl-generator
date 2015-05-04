@@ -1,7 +1,7 @@
 TODO
-+ path input
 + README
 + constants for date, int, etc
++ RELEASE
 
 BACKLOG
 + add custom Type objects
@@ -41,3 +41,4 @@ DONE
 - tests for generated object - arrays, list, set
 - fix debug messages
 - change package
+- test for main

@@ -24,7 +24,7 @@ dependencies {
 
 jar {
     manifest {
-        attributes 'Main-Class': 'org.marting.Main'
+        attributes 'Main-Class': 'org.marting.dslgenerator.Main'
     }
     from {
         configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }

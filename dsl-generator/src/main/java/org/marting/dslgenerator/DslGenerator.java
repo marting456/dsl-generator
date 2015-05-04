@@ -22,6 +22,7 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.marting.dslgenerator.exception.UnsupportedTypeException;
 import org.marting.dslgenerator.field.DslField;
 import org.marting.dslgenerator.field.DslFieldArray;
 import org.marting.dslgenerator.field.DslFieldComplex;
@@ -53,7 +54,7 @@ public final class DslGenerator {
         this.cfg.setClassForTemplateLoading(DslGenerator.class, "/");
 	}
 
-	public String generateDSL(String className, String dir) throws ClassNotFoundException, IOException, TemplateException, UnsupportedType {
+	public String generateDSL(String className, String dir) throws ClassNotFoundException, IOException, TemplateException, UnsupportedTypeException {
 		dslModel = new DslModel();
 	    dslModel.setSourceClass(loadSourceClass(className, dir));
 	    dslModel.setFields(getFields(dslModel.getSourceClass()));
@@ -88,7 +89,7 @@ public final class DslGenerator {
         return aClass;
 	}
 
-	List<DslField> getFields(Class<?> aClass) throws UnsupportedType, ClassNotFoundException {
+	List<DslField> getFields(Class<?> aClass) throws UnsupportedTypeException, ClassNotFoundException {
 		Field[] fields = FieldUtils.getAllFields(aClass);
 		List<DslField> dslFields = new ArrayList<DslField>();
 		for (Field field : fields) {

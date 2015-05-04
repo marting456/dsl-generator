@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.marting.dslgenerator.RandomValueGenerator;
-import org.marting.dslgenerator.UnsupportedType;
+import org.marting.dslgenerator.exception.UnsupportedTypeException;
 
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au
@@ -28,13 +28,13 @@ public class DslFieldFactory {
 		implementationMap.put(Collection.class, HashSet.class);
 	}
 
-	public static DslField buildDslField(Field field) throws UnsupportedType, ClassNotFoundException {
+	public static DslField buildDslField(Field field) throws UnsupportedTypeException, ClassNotFoundException {
 		Type type = field.getGenericType();
 		// Complex type
 	    if (type instanceof ParameterizedType) {
 	        ParameterizedType pType = (ParameterizedType) type;
 	        if (pType.getActualTypeArguments().length > 1) {
-	        	throw new UnsupportedType(field);
+	        	throw new UnsupportedTypeException(field);
 	        }
 		    DslFieldComplex dslField = new DslFieldComplex(field);
 			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
