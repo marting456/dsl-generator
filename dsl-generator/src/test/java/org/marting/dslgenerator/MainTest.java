@@ -67,13 +67,13 @@ public class MainTest {
 		Main.main(args);
 		BufferedReader reader = new BufferedReader(new FileReader("TestDomainModelChildDSL.java"));
 		assertThat(reader.readLine(), is("package org.marting.dslgenerator.data;"));
-		File file = new File("TestDomainModelChildDSL.java");
+		File file = new File("./TestDomainModelChildDSL.java");
 		file.delete();
 		reader.close();
 
 		reader = new BufferedReader(new FileReader("AbstractDSL.java"));
 		assertThat(reader.readLine(), is("package org.marting.dslgenerator.data;"));
-		file = new File("AbstractDSL.java");
+		file = new File("./AbstractDSL.java");
 		file.delete();
 		reader.close();
 	}

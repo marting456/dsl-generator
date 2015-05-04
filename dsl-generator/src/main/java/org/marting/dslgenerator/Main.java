@@ -23,10 +23,12 @@ public class Main {
 
 	private static Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]";
+	private static final int USAGE_WIDTH= 100;
 
 	public static void main(String[] args) {
 
 		HelpFormatter formatter = new HelpFormatter();
+		formatter.setWidth(USAGE_WIDTH);
 		CommandLine commands = null;
 		Options options = createOptions();
 		try {
@@ -81,7 +83,7 @@ public class Main {
 			throw new InvalidUsageException("Invalid usage.");
 		}
 
-		if (commands.getOptionValue("c") == null ) {
+		if (commands.getOptionValue("c") == null) {
 			throw new InvalidUsageException("Missing input class name.");
 		}
 		return commands;
