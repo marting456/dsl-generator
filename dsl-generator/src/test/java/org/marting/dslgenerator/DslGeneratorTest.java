@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isEmptyString;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -34,6 +35,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.marting.dslgenerator.data.TestClassWithNoArgConstructor;
 import org.marting.dslgenerator.data.TestDomainModelChild;
 import org.marting.dslgenerator.exception.UnsupportedTypeException;
 import org.marting.dslgenerator.field.DslField;
@@ -81,6 +83,7 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getType().equals(double.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(int.class)).count(), equalTo(2L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Date.class)).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(TestClassWithNoArgConstructor.class)).count(), equalTo(1L));
 	}
 
 	@Test
@@ -137,6 +140,17 @@ public class DslGeneratorTest {
 		assertThat(tdmc.getStringArray()[0], not(isEmptyString()));
 		assertThat(tdmc.getStringArray()[9], not(isEmptyString()));
 
+		assertThat(tdmc.getCustomFieldWithoutNoArgConstr(), nullValue());
+		assertThat(tdmc.getCustomFieldWithNoArgConstr(), notNullValue());
+
+		assertThat(tdmc.getCustomFieldWithoutNoArgConstrList().size(), is(10));
+		assertThat(tdmc.getCustomFieldWithoutNoArgConstrList().get(0), nullValue());
+		assertThat(tdmc.getCustomFieldWithoutNoArgConstrList().get(9),  nullValue());
+
+		assertThat(tdmc.getCustomFieldWithNoArgConstrList().size(), is(10));
+		assertThat(tdmc.getCustomFieldWithNoArgConstrList().get(0), notNullValue());
+		assertThat(tdmc.getCustomFieldWithNoArgConstrList().get(9),  notNullValue());
+
 		File root = new File("org");
         FileUtils.deleteDirectory(root);
 	}
@@ -158,7 +172,7 @@ public class DslGeneratorTest {
 		assertThat(fields.stream().filter(s -> s.getName().equals("integerSet")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getName().equals("stringArray")).count(), equalTo(1L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(String[].class)).count(), equalTo(1L));
-		assertThat(fields.stream().filter(s -> s.getType().equals(List.class)).count(), equalTo(1L));
+		assertThat(fields.stream().filter(s -> s.getType().equals(List.class)).count(), equalTo(3L));
 		assertThat(fields.stream().filter(s -> s.getType().equals(Collection.class)).count(), equalTo(1L));
 	}
 

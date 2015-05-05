@@ -1,5 +1,6 @@
 package org.marting.dslgenerator.field;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -41,18 +42,37 @@ public class DslFieldFactory {
 	        dslField.setTypeParameter(Class.forName(pType.getActualTypeArguments()[0].getTypeName()));
 	        dslField.setTypeParameterGenerator(RandomValueGenerator.getGeneratorValue(dslField.getTypeParameter()));
 	        dslField.setImplementingClazz(implementationMap.get(dslField.getField().getType()));
+			if (dslField.getTypeParameterGenerator().equals("null")) {
+				dslField.setTypeParameterGenerator(getNoArgsConstructorGenerator(dslField.getTypeParameter()));
+			}
 			return dslField;
 		// Array
 	    } else if (field.getType().isArray()) {
 		    DslFieldArray dslField = new DslFieldArray(field);
 			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
 			dslField.setComponentGeneratorValue(RandomValueGenerator.getGeneratorValue(dslField.getComponentType()));
+			if (dslField.getComponentGeneratorValue().equals("null")) {
+				dslField.setComponentGeneratorValue(getNoArgsConstructorGenerator(dslField.getComponentType()));
+			}
 			return dslField;
 		// Simple
 	    } else {
 		    DslField dslField = new DslFieldSimple(field);
 			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
+			// if null try to set a generator with the default constructor
+			if (dslField.getGeneratorValue().equals("null")) {
+				dslField.setGeneratorValue(getNoArgsConstructorGenerator(field.getType()));
+			}
 			return dslField;
 	    }
+	}
+
+	private static String getNoArgsConstructorGenerator(Class<?> clazz) {
+		for (Constructor<?> constructor : clazz.getConstructors()) {
+			if (constructor.getParameterCount() == 0) {
+				return "new " + clazz.getSimpleName() + "()";
+			}
+		}
+		return "null";
 	}
 }

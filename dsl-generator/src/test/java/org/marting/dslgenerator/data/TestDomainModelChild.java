@@ -12,12 +12,6 @@ import org.marting.dslgenerator.dataplus.TestDomainInterface;
  */
 public class TestDomainModelChild extends TestDomainModelParent implements TestDomainInterface {
 
-	public List<String> getStringList() {
-		return stringList;
-	}
-	public void setStringList(List<String> stringList) {
-		this.stringList = stringList;
-	}
 	public static final String STATIC_FINAL_FIELD = "staticFinalField";
 	private int intField;
 	private double doubleField;
@@ -37,6 +31,58 @@ public class TestDomainModelChild extends TestDomainModelParent implements TestD
 	private Collection<String> stringCollection;
 	private String[] stringArray;
 
+	private TestClassWithNoArgConstructor customFieldWithNoArgConstr;
+	private TestClassWithoutNoArgConstructor customFieldWithoutNoArgConstr;
+
+	private List<TestClassWithNoArgConstructor> customFieldWithNoArgConstrList;
+	private List<TestClassWithoutNoArgConstructor> customFieldWithoutNoArgConstrList;
+
+	private TestClassWithNoArgConstructor[] customFieldWithNoArgConstrArray;
+	private TestClassWithoutNoArgConstructor[] customFieldWithoutNoArgConstrArray;
+
+	public List<String> getStringList() {
+		return stringList;
+	}
+	public void setStringList(List<String> stringList) {
+		this.stringList = stringList;
+	}
+	public TestClassWithNoArgConstructor[] getCustomFieldWithNoArgConstrArray() {
+		return customFieldWithNoArgConstrArray;
+	}
+	public void setCustomFieldWithNoArgConstrArray(TestClassWithNoArgConstructor[] customFieldWithNoArgConstrArray) {
+		this.customFieldWithNoArgConstrArray = customFieldWithNoArgConstrArray;
+	}
+	public TestClassWithoutNoArgConstructor[] getCustomFieldWithoutNoArgConstrArray() {
+		return customFieldWithoutNoArgConstrArray;
+	}
+	public void setCustomFieldWithoutNoArgConstrArray(TestClassWithoutNoArgConstructor[] customFieldWithoutNoArgConstrArray) {
+		this.customFieldWithoutNoArgConstrArray = customFieldWithoutNoArgConstrArray;
+	}
+	public TestClassWithNoArgConstructor getCustomFieldWithNoArgConstr() {
+		return customFieldWithNoArgConstr;
+	}
+	public void setCustomFieldWithNoArgConstr(TestClassWithNoArgConstructor customFieldWithNoArgConstr) {
+		this.customFieldWithNoArgConstr = customFieldWithNoArgConstr;
+	}
+	public TestClassWithoutNoArgConstructor getCustomFieldWithoutNoArgConstr() {
+		return customFieldWithoutNoArgConstr;
+	}
+	public void setCustomFieldWithoutNoArgConstr(TestClassWithoutNoArgConstructor customFieldWithoutNoArgConstr) {
+		this.customFieldWithoutNoArgConstr = customFieldWithoutNoArgConstr;
+	}
+	public List<TestClassWithNoArgConstructor> getCustomFieldWithNoArgConstrList() {
+		return customFieldWithNoArgConstrList;
+	}
+	public void setCustomFieldWithNoArgConstrList(List<TestClassWithNoArgConstructor> customFieldWithNoArgConstrList) {
+		this.customFieldWithNoArgConstrList = customFieldWithNoArgConstrList;
+	}
+	public List<TestClassWithoutNoArgConstructor> getCustomFieldWithoutNoArgConstrList() {
+		return customFieldWithoutNoArgConstrList;
+	}
+	public void setCustomFieldWithoutNoArgConstrList(
+			List<TestClassWithoutNoArgConstructor> customFieldWithoutNoArgConstrList) {
+		this.customFieldWithoutNoArgConstrList = customFieldWithoutNoArgConstrList;
+	}
 	public String[] getStringArray() {
 		return stringArray;
 	}
@@ -85,6 +131,7 @@ public class TestDomainModelChild extends TestDomainModelParent implements TestD
 	public void setShortField(short shortField) {
 		this.shortField = shortField;
 	}
+	@Override
 	public String getStringField() {
 		return stringField;
 	}

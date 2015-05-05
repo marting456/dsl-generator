@@ -32,6 +32,16 @@ public class DslFieldFactoryTest {
 	}
 
 	@Test
+	public void shouldBuildSimpleCustom() throws NoSuchFieldException, ClassNotFoundException, UnsupportedTypeException {
+		Class<TestDomainModelChild> clazz = TestDomainModelChild.class;
+		Field field = FieldUtils.getField(clazz, "customFieldWithNoArgConstr", true);
+		DslField result = DslFieldFactory.buildDslField(field);
+		assertThat(result, instanceOf(DslFieldSimple.class));
+		assertThat(result.getDeclaredType(), equalTo("TestClassWithNoArgConstructor"));
+		assertThat(result.getGeneratorValue(), equalTo("new TestClassWithNoArgConstructor()"));
+	}
+
+	@Test
 	public void shouldBuildComplex() throws NoSuchFieldException, ClassNotFoundException, UnsupportedTypeException {
 		Class<TestDomainModelChild> clazz = TestDomainModelChild.class;
 		Field field = FieldUtils.getField(clazz, "stringList", true);
@@ -43,11 +53,33 @@ public class DslFieldFactoryTest {
 	}
 
 	@Test
+	public void shouldBuildComplexCustom() throws NoSuchFieldException, ClassNotFoundException, UnsupportedTypeException {
+		Class<TestDomainModelChild> clazz = TestDomainModelChild.class;
+		Field field = FieldUtils.getField(clazz, "customFieldWithNoArgConstrList", true);
+		DslField result = DslFieldFactory.buildDslField(field);
+		assertThat(result, instanceOf(DslFieldComplex.class));
+		DslFieldComplex dfc = (DslFieldComplex) result;
+		assertThat(dfc.getDeclaredType(), equalTo("List<TestClassWithNoArgConstructor>"));
+		assertThat(dfc.getImplementingClazz(), equalTo(ArrayList.class));
+		assertThat(dfc.getTypeParameterGenerator(), equalTo("new TestClassWithNoArgConstructor()"));
+	}
+
+	@Test
 	public void shouldBuildArray() throws NoSuchFieldException, ClassNotFoundException, UnsupportedTypeException {
 		Class<TestDomainModelChild> clazz = TestDomainModelChild.class;
 		Field field = FieldUtils.getField(clazz, "stringArray", true);
 		DslField result = DslFieldFactory.buildDslField(field);
 		assertThat(result, instanceOf(DslFieldArray.class));
 		assertThat(result.getDeclaredType(), equalTo("String[]"));
+	}
+
+	@Test
+	public void shouldBuildArrayCustom() throws NoSuchFieldException, ClassNotFoundException, UnsupportedTypeException {
+		Class<TestDomainModelChild> clazz = TestDomainModelChild.class;
+		Field field = FieldUtils.getField(clazz, "customFieldWithNoArgConstrArray", true);
+		DslFieldArray result = (DslFieldArray) DslFieldFactory.buildDslField(field);
+		assertThat(result, instanceOf(DslFieldArray.class));
+		assertThat(result.getDeclaredType(), equalTo("TestClassWithNoArgConstructor[]"));
+		assertThat(result.getComponentGeneratorValue(), equalTo("new TestClassWithNoArgConstructor()"));
 	}
 }
