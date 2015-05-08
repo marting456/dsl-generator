@@ -22,7 +22,7 @@ public class Customer {
 
 it will generate the following class:
 
-<code>
+<pre>
 public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     private Integer customerId;
     private String firstname;
@@ -34,5 +34,5 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     
     //getters and setters
 }
-</code>
+</pre>
 
