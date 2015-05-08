@@ -1,5 +1,7 @@
 # dsl-generator
 
+## Introduction
+
 The jar in this project generates a dsl helper class based on a POJO/domain class that can be used to automatically populate test data.
 
 For example, given Customer.class:
@@ -70,4 +72,8 @@ public void shouldCreateCustomerInRepo() {
     // etc for all fields
 }
 ```
-Note that the benefit of CustomerDSL is that the fields of Customer don't need to be set up in each test case. Also, if a new mandatory field is added to Customer it can easily added to CustomerDSL without individual tests needing to be modified. 
+## Usage
+
+## Advantages
+
+## Disadvantages
