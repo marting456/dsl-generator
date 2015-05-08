@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The jar in this project generates a dsl helper class based on a POJO/domain class that can be used to automatically populate test data.
+The jar built by this project (see releases) generates a dsl helper class based on a POJO/domain class that can be used to automatically populate test data.
 
 For example, given Customer.class:
 
@@ -25,8 +25,10 @@ public class Customer {
 it will generate the following CustomerDSL.java:
 
 ```java
+package my.example;
+
 public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
-    private Integer customerId = RandomUtils.nextInt(0, 10);;
+    private Integer customerId = RandomUtils.nextInt(0, 10);
     private String firstname = RandomStringUtils.randomAlphabetic(10);
     private String middlename = RandomStringUtils.randomAlphabetic(10);
     private String lastname = RandomStringUtils.randomAlphabetic(10);
@@ -72,6 +74,26 @@ public void shouldCreateCustomerInRepo() {
     // etc for all fields
 }
 ```
+note that without CustomerDSL the test case would have had to set up its test data:
+```java
+@Test
+public void shouldCreateCustomerInRepo() {
+    Customer customer = new Customer();
+    customer.setCustomerId(123456);
+    customer.setFirstname("testFirstname");
+    customer.setMiddlename("testMiddlename");
+    customer.setLastname("testLastname");
+    customer.setDob(new Date());
+    customer.setSex("M");
+    customer.setMobile("0404123123");
+    customerRepo.save(customer);
+    Customer savedCustomer = customerRepo.findOneByMobile(customer.getMobile());
+    assertThat(savedCustomer.getFirstname(), equalTo(customer.getFirstname());
+    assertThat(savedCustomer.getLastname(), equalTo(customer.getLastname());
+    // etc for all fields
+}
+```
+
 ## Usage
 
 ## Advantages
