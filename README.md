@@ -4,7 +4,7 @@ The jar in this project generates a dsl helper class based on a POJO/domain clas
 
 For example, given the class:
 
-```
+```Java
 package my.example;
 
 public class Customer {
@@ -15,5 +15,26 @@ public class Customer {
     private String dob;
     private String sex;
     private String mobile;
+    
+    //getters and setters
 }
-'''
+```
+
+it will generate the following class:
+
+```Java
+public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
+    private Integer customerId;
+    private String firstname;
+    private String middlename;
+    private String lastname;
+    private String dob;
+    private String sex;
+    private String mobile;
+    
+    //getters and setters
+}
+
+```
+
+
