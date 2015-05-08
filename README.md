@@ -96,6 +96,8 @@ public void shouldCreateCustomerInRepo() {
 
 ## Usage
 
+## Features
+
 ## Dependencies
 
 ## Advantages
