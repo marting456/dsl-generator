@@ -48,14 +48,17 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
         customer.setLastname(this.lastname); 
         customer.setMiddlename(this.middlename); 
         // etc. for all fields
+        return customer;
     }
     
     public CustomerDSL withFirstname(String firstname) {
         this.firstname = firstname;
+        return this;
     }
     
     public CustomerDSL withLastname(String lastname) {
         this.lastname = lastname;
+        return this;
     }
     
     // etch with method for all fields
