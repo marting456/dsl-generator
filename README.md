@@ -22,7 +22,7 @@ public class Customer {
 
 it will generate the following CustomerDSL.java:
 
-'''java
+```java
 public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     private Integer customerId = RandomUtils.nextInt(0, 10);;
     private String firstname = RandomStringUtils.randomAlphabetic(10);
@@ -56,5 +56,5 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     
     // etch with method for all fields
 }
-'''
+```
 
