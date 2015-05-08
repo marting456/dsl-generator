@@ -32,7 +32,7 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     private String sex = RandomStringUtils.randomAlphabetic(10);
     private String mobile = RandomStringUtils.randomAlphabetic(10);
     
-    private TestDomainModelChildDSL () { };
+    private CustomerDSL() { };
     
     public static CustomerDSL Customer() {
         return new CustomerDSL();
@@ -57,4 +57,17 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     // etch with method for all fields
 }
 ```
+and then it can be used in a test case as follows:
 
+```java
+@Test
+public void shouldCreateCustomerInRepo() {
+    Customer customer = CustomerDSL.customer().withFirstname("martin").build();
+    customerRepo.save(customer);
+    Customer savedCustomer = customerRepo.findOneByMobile(customer.getMobile());
+    assertThat(savedCustomer.getFirstname(), equalTo(customer.getFirstname());
+    assertThat(savedCustomer.getLastname(), equalTo(customer.getLastname());
+    // etc for all fields
+}
+```
+Note that the benefit of CustomerDSL is that the fields of Customer don't need to be set up in each test case. Also, if a new mandatory field is added to Customer it can easily added to CustomerDSL without individual test needing to be modified. 
