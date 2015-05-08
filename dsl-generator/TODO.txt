@@ -1,11 +1,11 @@
 TODO
 + README
 + constants for date, int, etc
-+ RELEASE
++ RELEASE 1.0
 
 BACKLOG
-+ generate meaningful random values
 + handle enums
++ generate meaningful random values
 
 DONE
 - reflect fields and store in a data structure
