@@ -3,10 +3,6 @@ TODO
 + constants for date, int, etc
 + RELEASE 1.0
 
-BACKLOG
-+ handle enums
-+ generate meaningful random values
-
 DONE
 - reflect fields and store in a data structure
 - insert fields in template
