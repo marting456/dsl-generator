@@ -1,6 +1,5 @@
 TODO
 + README
-+ constants for date, int, etc
 + RELEASE 1.0
 
 DONE
@@ -38,3 +37,4 @@ DONE
 - change package
 - test for main
 - add custom Type objects
+- constants for date, int, etc
