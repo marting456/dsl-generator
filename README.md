@@ -14,7 +14,7 @@ public class Customer {
     private String firstname;
     private String middlename;
     private String lastname;
-    private String dob;
+    private Date dob;
     private String sex;
     private String mobile;
     
@@ -32,7 +32,7 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     private String firstname = RandomStringUtils.randomAlphabetic(10);
     private String middlename = RandomStringUtils.randomAlphabetic(10);
     private String lastname = RandomStringUtils.randomAlphabetic(10);
-    private String dob = RandomStringUtils.randomAlphabetic(10);
+    private Date dob = new Date(RandomUtils.nextLong(0 ,((long) 1000 * 60 * 60 * 60 * 24 * 30 * 365 * 30)));
     private String sex = RandomStringUtils.randomAlphabetic(10);
     private String mobile = RandomStringUtils.randomAlphabetic(10);
     
@@ -64,6 +64,16 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     // etch with method for all fields
 }
 ```
+Where AbstractDSL is
+```java
+package my.example;
+
+public abstract class AbstractDSL<T , S> {
+
+	abstract S build();
+}
+```
+
 and then it can be used in a test case as follows:
 
 ```java
