@@ -1,6 +1,4 @@
 # dsl-generator
-* auto-gen TOC:
-{:toc}
 ## Introduction
 
 The jar built by this project (see releases) generates a dsl helper class based on a POJO/domain class that can be used to automatically populate test data.
