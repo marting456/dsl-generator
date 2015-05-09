@@ -56,10 +56,11 @@ public class DslGeneratorTest {
 	private static final String TEST_PACKAGE_DIR = "org/marting/dslgenerator/data/";
 
 	private Class<?> aClass;
-	private DslGenerator dslGenerator = new DslGenerator();
+	private DslGenerator dslGenerator;
 
 	@Before
-	public void init() {
+	public void init() throws IOException {
+		this.dslGenerator = new DslGenerator();
 		try {
 			aClass = dslGenerator.loadSourceClass(TEST_CLASS_NAME, "");
 		} catch (Exception e) {
@@ -68,7 +69,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldReadFields() throws ClassNotFoundException, UnsupportedTypeException  {
+	public void shouldReadFields() throws ClassNotFoundException, UnsupportedTypeException, IOException  {
 		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getType().equals(Long.class)).count(), equalTo(2L));
@@ -87,7 +88,7 @@ public class DslGeneratorTest {
 	}
 
 	@Test
-	public void shouldReadParentFields() throws ClassNotFoundException, UnsupportedTypeException  {
+	public void shouldReadParentFields() throws ClassNotFoundException, UnsupportedTypeException, IOException  {
 		List<DslField> dslFields = dslGenerator.getFields(aClass);
 		List<Field> fields = dslFields.stream().map(s -> s.getField()).collect(Collectors.toList());
 		assertThat(fields.stream().filter(s -> s.getName().equals("intFieldP")).count(), equalTo(1L));

@@ -6,6 +6,10 @@ import ${class.name};
 
 public class ${dslClassName} extends AbstractDSL<${dslClassName}, ${className}> {
           
+    <#list constants as constant>
+    private static final ${constant.type} ${constant.name} = ${constant.value};
+    </#list>     
+          
     // members        
     <#list dslFields as dslField>
     private ${dslField.declaredType} ${dslField.field.name} = ${dslField.generatorValue};

@@ -21,6 +21,7 @@ import org.marting.dslgenerator.exception.UnsupportedTypeException;
 public class DslFieldFactory {
 
 	private static Map<Class<?>, Class<?>> implementationMap;
+	private RandomValueGenerator rvg;
 
 	static {
 		implementationMap = new HashMap<Class<?>, Class<?>>();
@@ -29,7 +30,11 @@ public class DslFieldFactory {
 		implementationMap.put(Collection.class, HashSet.class);
 	}
 
-	public static DslField buildDslField(Field field) throws UnsupportedTypeException, ClassNotFoundException {
+	public DslFieldFactory(RandomValueGenerator rvg) {
+		this.rvg = rvg;
+	}
+
+	public DslField buildDslField(Field field) throws UnsupportedTypeException, ClassNotFoundException {
 		Type type = field.getGenericType();
 		// Complex type
 	    if (type instanceof ParameterizedType) {
@@ -38,9 +43,9 @@ public class DslFieldFactory {
 	        	throw new UnsupportedTypeException(field);
 	        }
 		    DslFieldComplex dslField = new DslFieldComplex(field);
-			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
+			dslField.setGeneratorValue(rvg.getGeneratorValue(field));
 	        dslField.setTypeParameter(Class.forName(pType.getActualTypeArguments()[0].getTypeName()));
-	        dslField.setTypeParameterGenerator(RandomValueGenerator.getGeneratorValue(dslField.getTypeParameter()));
+	        dslField.setTypeParameterGenerator(rvg.getGeneratorValue(dslField.getTypeParameter()));
 	        dslField.setImplementingClazz(implementationMap.get(dslField.getField().getType()));
 			if (dslField.getTypeParameterGenerator().equals("null")) {
 				dslField.setTypeParameterGenerator(getNoArgsConstructorGenerator(dslField.getTypeParameter()));
@@ -49,8 +54,8 @@ public class DslFieldFactory {
 		// Array
 	    } else if (field.getType().isArray()) {
 		    DslFieldArray dslField = new DslFieldArray(field);
-			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
-			dslField.setComponentGeneratorValue(RandomValueGenerator.getGeneratorValue(dslField.getComponentType()));
+			dslField.setGeneratorValue(rvg.getGeneratorValue(field));
+			dslField.setComponentGeneratorValue(rvg.getGeneratorValue(dslField.getComponentType()));
 			if (dslField.getComponentGeneratorValue().equals("null")) {
 				dslField.setComponentGeneratorValue(getNoArgsConstructorGenerator(dslField.getComponentType()));
 			}
@@ -58,7 +63,7 @@ public class DslFieldFactory {
 		// Simple
 	    } else {
 		    DslField dslField = new DslFieldSimple(field);
-			dslField.setGeneratorValue(RandomValueGenerator.getGeneratorValue(field));
+			dslField.setGeneratorValue(rvg.getGeneratorValue(field));
 			// if null try to set a generator with the default constructor
 			if (dslField.getGeneratorValue().equals("null")) {
 				dslField.setGeneratorValue(getNoArgsConstructorGenerator(field.getType()));
@@ -67,7 +72,7 @@ public class DslFieldFactory {
 	    }
 	}
 
-	private static String getNoArgsConstructorGenerator(Class<?> clazz) {
+	private String getNoArgsConstructorGenerator(Class<?> clazz) {
 		for (Constructor<?> constructor : clazz.getConstructors()) {
 			if (constructor.getParameterCount() == 0) {
 				return "new " + clazz.getSimpleName() + "()";

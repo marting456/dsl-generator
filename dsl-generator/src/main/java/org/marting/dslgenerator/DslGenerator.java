@@ -47,11 +47,14 @@ public final class DslGenerator {
 	private DslModel dslModel;
 	private Configuration cfg;
 	private String dslClassName;
+	private RandomValueGenerator rvg;
 
-	public DslGenerator() {
+	public DslGenerator() throws IOException {
 		//Freemarker configuration object
         this.cfg = new Configuration();
         this.cfg.setClassForTemplateLoading(DslGenerator.class, "/");
+        this.rvg = new RandomValueGenerator();
+
 	}
 
 	public String generateDSL(String className, String dir) throws ClassNotFoundException, IOException, TemplateException, UnsupportedTypeException {
@@ -89,12 +92,13 @@ public final class DslGenerator {
         return aClass;
 	}
 
-	List<DslField> getFields(Class<?> aClass) throws UnsupportedTypeException, ClassNotFoundException {
+	List<DslField> getFields(Class<?> aClass) throws UnsupportedTypeException, ClassNotFoundException, IOException {
 		Field[] fields = FieldUtils.getAllFields(aClass);
 		List<DslField> dslFields = new ArrayList<DslField>();
+		DslFieldFactory dslFieldFactory = new DslFieldFactory(rvg);
 		for (Field field : fields) {
 			if (!(Modifier.isStatic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()))) {
-				DslField dslField = DslFieldFactory.buildDslField(field);
+				DslField dslField = dslFieldFactory.buildDslField(field);
 				dslFields.add(dslField);
 			}
 		}
@@ -136,6 +140,7 @@ public final class DslGenerator {
         model.put("imports", dslModel.getImports());
         model.put("classObj", Introspector.decapitalize(dslModel.getSourceClass().getSimpleName()));
         model.put("isTypeOf", new IsTypeOf());
+        model.put("constants", rvg.getConstantsUsed());
 
         Writer out = new StringWriter();
         template.process(model, out);
