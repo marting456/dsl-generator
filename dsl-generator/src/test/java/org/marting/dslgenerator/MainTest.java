@@ -40,14 +40,12 @@ public class MainTest {
 
 	@Test
 	public void shouldParseArgs() throws InvalidUsageException, ParseException {
-		String[] args = {"-c", "org.some.Class", "-d", "someDir", "-ga", "-v"};
+		String[] args = {"-c", "org.some.Class", "-ga", "-v"};
 		CommandLine commands = Main.readInputParameters(args, Main.createOptions());
 		assertThat(commands.hasOption("c"), is(true));
-		assertThat(commands.hasOption("d"), is(true));
 		assertThat(commands.hasOption("ga"), is(true));
 		assertThat(commands.hasOption("v"), is(true));
 		assertThat(commands.getOptionValue("c"), equalTo("org.some.Class"));
-		assertThat(commands.getOptionValue("d"), equalTo("someDir"));
 	}
 
 	@Test

@@ -33,14 +33,13 @@ import javax.tools.ToolProvider;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.marting.dslgenerator.data.TestClassWithNoArgConstructor;
 import org.marting.dslgenerator.data.TestDomainModelChild;
 import org.marting.dslgenerator.exception.UnsupportedTypeException;
 import org.marting.dslgenerator.field.DslField;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateException;
 
@@ -49,7 +48,7 @@ import freemarker.template.TemplateException;
  */
 public class DslGeneratorTest {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(DslGeneratorTest.class);
+	private static final Logger LOGGER = Logger.getLogger(DslGeneratorTest.class);
 
 	private static final String TEST_CLASS_NAME = "org.marting.dslgenerator.data.TestDomainModelChild";
 	private static final String TEST_CLASS_NAME_UNSUPPORTED = "org.marting.dslgenerator.data.TestDomainModelChildUnsupported";
@@ -62,7 +61,7 @@ public class DslGeneratorTest {
 	public void init() throws IOException {
 		this.dslGenerator = new DslGenerator();
 		try {
-			aClass = dslGenerator.loadSourceClass(TEST_CLASS_NAME, "");
+			aClass = dslGenerator.loadSourceClass(TEST_CLASS_NAME);
 		} catch (Exception e) {
 			fail("Unbable to load class" + e.toString());
 		}
@@ -100,7 +99,7 @@ public class DslGeneratorTest {
 		IOException, TemplateException, UnsupportedTypeException, IllegalAccessException, IllegalArgumentException,
 		InvocationTargetException, NoSuchMethodException, SecurityException {
 
-		String dslSourceCode = dslGenerator.generateDSL(TEST_CLASS_NAME, "");
+		String dslSourceCode = dslGenerator.generateDSL(TEST_CLASS_NAME);
 		String absDslSourceCode = dslGenerator.generateAbstractDSL();
 		assertThat(dslSourceCode, notNullValue());
         File[] filesToCompile = prepareCompilationUnits(dslSourceCode, absDslSourceCode);
@@ -179,7 +178,7 @@ public class DslGeneratorTest {
 
 	@Test(expected = UnsupportedTypeException.class)
 	public void shouldThrowExceptionForUnsupportedClass() throws ClassNotFoundException, IOException, TemplateException, UnsupportedTypeException {
-		dslGenerator.generateDSL(TEST_CLASS_NAME_UNSUPPORTED, "");
+		dslGenerator.generateDSL(TEST_CLASS_NAME_UNSUPPORTED);
 	}
 
 	private File[] prepareCompilationUnits(String dslSourceCode, String absDslSourceCode) throws FileNotFoundException {

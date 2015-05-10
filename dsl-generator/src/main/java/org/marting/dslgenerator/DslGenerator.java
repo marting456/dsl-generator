@@ -1,17 +1,12 @@
 package org.marting.dslgenerator;
 
 import java.beans.Introspector;
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -22,14 +17,13 @@ import java.util.TreeSet;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.log4j.Logger;
 import org.marting.dslgenerator.exception.UnsupportedTypeException;
 import org.marting.dslgenerator.field.DslField;
 import org.marting.dslgenerator.field.DslFieldArray;
 import org.marting.dslgenerator.field.DslFieldComplex;
 import org.marting.dslgenerator.field.DslFieldFactory;
 import org.marting.dslgenerator.freemarker.IsTypeOf;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.Configuration;
 import freemarker.template.SimpleHash;
@@ -42,7 +36,7 @@ import freemarker.template.TemplateException;
 public final class DslGenerator {
 
 	public static final String ABSTRACT_DSL_NAME = "AbstractDSL";
-	private static final Logger LOGGER = LoggerFactory.getLogger(DslGenerator.class);
+	private static final Logger LOGGER = Logger.getLogger(DslGenerator.class);
 
 	private DslModel dslModel;
 	private Configuration cfg;
@@ -57,9 +51,9 @@ public final class DslGenerator {
 
 	}
 
-	public String generateDSL(String className, String dir) throws ClassNotFoundException, IOException, TemplateException, UnsupportedTypeException {
+	public String generateDSL(String className) throws ClassNotFoundException, IOException, TemplateException, UnsupportedTypeException {
 		dslModel = new DslModel();
-	    dslModel.setSourceClass(loadSourceClass(className, dir));
+	    dslModel.setSourceClass(loadSourceClass(className));
 	    dslModel.setFields(getFields(dslModel.getSourceClass()));
 	    dslModel.setImports(getImports(dslModel.getFields()));
 	    this.dslClassName = dslModel.getSourceClass().getSimpleName() + "DSL";
@@ -70,25 +64,15 @@ public final class DslGenerator {
 		return dslClassName;
 	}
 
-	Class<?> loadSourceClass(String className, String dir) throws ClassNotFoundException, MalformedURLException {
+	Class<?> loadSourceClass(String className) throws ClassNotFoundException, IOException {
 
-		File file = new File(dir);
 		Class<?> aClass = null;
-		URLClassLoader loader = null;
+		ClassLoader loader = ClassLoader.getSystemClassLoader();
 
-		URL url =  file.toURI().toURL();
-		URL[] urls = new URL[] { url };
-		LOGGER.debug("urls: " + Arrays.toString(urls));
 		// Create a new class loader with the directory
-		loader = new URLClassLoader(urls);
 		LOGGER.debug("class: " + className);
 		aClass = loader.loadClass(className);
-        LOGGER.debug("aClass.getName() = " + aClass.getName());
-        try {
-			loader.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        LOGGER.debug("loaded class:  " + aClass.getName());
         return aClass;
 	}
 

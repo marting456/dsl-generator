@@ -1,5 +1,5 @@
 TODO
-+ README
++ update README
 + RELEASE 1.0
 
 DONE
@@ -38,3 +38,5 @@ DONE
 - test for main
 - add custom Type objects
 - constants for date, int, etc
+- update options/usage no -d
+- replace logger

@@ -9,10 +9,10 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.marting.dslgenerator.exception.InvalidUsageException;
 import org.marting.dslgenerator.exception.UnsupportedTypeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateException;
 
@@ -21,8 +21,8 @@ import freemarker.template.TemplateException;
  */
 public class Main {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	private static final String USAGE = "java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]";
+	private static Logger LOGGER = Logger.getLogger(Main.class);
+	private static final String USAGE = "java -cp dsl-generator-1.0.jar;path/to/dependent/classes org.marting.dslgenerator.Main -c com.example.SomeClass [options]";
 	private static final int USAGE_WIDTH= 100;
 
 	public static void main(String[] args) {
@@ -38,17 +38,13 @@ public class Main {
 				return;
 			}
 			if (commands.hasOption("v")) {
-				System.setProperty(org.slf4j.impl.SimpleLogger.DEFAULT_LOG_LEVEL_KEY, "debug");
+				Logger.getRootLogger().setLevel(Level.DEBUG);
+				LOGGER = Logger.getLogger(Main.class);
 			}
-			LOGGER = LoggerFactory.getLogger(Main.class);
 			LOGGER.debug("Starting...");
 			DslGenerator dslGenerator = new DslGenerator();
 			String className = commands.getOptionValue("c");
-			String dir = ".";
-			if (commands != null && commands.hasOption("d")) {
-				dir = commands.getOptionValue("d");
-			}
-			String resultDsl = dslGenerator.generateDSL(className, dir);
+			String resultDsl = dslGenerator.generateDSL(className);
 			String dslClassName = dslGenerator.getDslClassName();
 			PrintWriter fileWriter = new PrintWriter(dslClassName + ".java");
 			fileWriter.print(resultDsl);
@@ -67,8 +63,9 @@ public class Main {
 			formatter.printHelp(USAGE, options);
 		} catch (UnsupportedTypeException e) {
 			LOGGER.error(e.getMessage());
+			e.printStackTrace();
 		} catch (ClassNotFoundException | IOException | TemplateException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e.toString());
 		}
 	}
 
@@ -91,12 +88,10 @@ public class Main {
 
 	static Options createOptions() {
 		Options options = new Options();
-		options.addOption("d", true, "the directory where the root package is located, ie {root-package-dir}/com/example/SomeClass. defaults to current directory.");
 		options.addOption("c", "class", true, "fully qualified name of source class ie. com.example.SomeClass.");
 		options.addOption("h", false, "print this message");
 		options.addOption("ga", "generate-abstract", false, "generate abstract base class");
 		options.addOption("v", "verbose", false, "print debugging information.");
 		return options;
 	}
-
 }
