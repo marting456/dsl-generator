@@ -56,7 +56,7 @@ public class MainTest {
 		assertThat(reader.readLine(), is("package org.marting.dslgenerator.data;"));
 		File file = new File("TestDomainModelChildDSL.java");
 		reader.close();
-		file.delete();
+		assertThat(file.delete(), is(true));
 	}
 
 	@Test
@@ -68,11 +68,13 @@ public class MainTest {
 		File file = new File("./TestDomainModelChildDSL.java");
 		file.delete();
 		reader.close();
+		assertThat(file.delete(), is(true));
+
 
 		reader = new BufferedReader(new FileReader("AbstractDSL.java"));
 		assertThat(reader.readLine(), is("package org.marting.dslgenerator.data;"));
 		file = new File("./AbstractDSL.java");
-		file.delete();
 		reader.close();
+		assertThat(file.delete(), is(true));
 	}
 }

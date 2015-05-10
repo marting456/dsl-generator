@@ -1,5 +1,4 @@
 TODO
-+ update README
 + RELEASE 1.0
 
 DONE
@@ -40,3 +39,4 @@ DONE
 - constants for date, int, etc
 - update options/usage no -d
 - replace logger
+- update README
