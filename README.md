@@ -107,11 +107,28 @@ public void shouldCreateCustomerInRepo() {
 ```
 
 ## Usage
-
-## Features
+<pre>
+usage: java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]
+ -c,--class <arg>          fully qualified name of source class ie. com.example.SomeClass.
+ -d <arg>                  the directory where the root package is located, ie
+                           {root-package-dir}/com/example/SomeClass. defaults to current directory.
+ -ga,--generate-abstract   generate abstract base class
+ -h                        print this message
+ -v,--verbose              print debugging information.
+</pre>
 
 ## Dependencies
+All dependencies are included in the generated jar but the generated DSL will have the following dependencies:
+* org.apache.commons:commons-lang3:3.4 (or above)
+* AbstractDSL (can be generated with the -ga option)
 
-## Advantages
-
-## Disadvantages
+## Supported field types
+All types are supported. The following classes will be initialized with RanodmUtils:
+* java.lang.Double;
+* java.lang.Float;
+* java.lang.Integer;
+* java.lang.Long;
+* java.lang.Short;
+* java.lang.String;
+* java.util.Date;
+All other types will be initialized with a default constructor if exists. To null otherwise.
