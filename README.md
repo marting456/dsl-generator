@@ -47,7 +47,7 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
     
     private CustomerDSL() { };
     
-    public static CustomerDSL Customer() {
+    public static CustomerDSL customer() {
         return new CustomerDSL();
     }
     
@@ -119,8 +119,8 @@ public void shouldCreateCustomerInRepo() {
 ## Usage
 <pre>
 usage: java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]
- -c,--class <arg>          fully qualified name of source class ie. com.example.SomeClass.
- -d <arg>                  the directory where the root package is located, ie
+ -c,--class <arg>		   fully qualified name of source class ie. com.example.SomeClass.
+ -d <arg>				   the directory where the root package is located, ie
                            {root-package-dir}/com/example/SomeClass. defaults to current directory.
  -ga,--generate-abstract   generate abstract base class
  -h                        print this message
