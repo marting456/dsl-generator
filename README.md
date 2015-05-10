@@ -125,13 +125,15 @@ usage: java -cp dsl-generator-1.0.jar;path/to/dependent/classes org.marting.dslg
  -v,--verbose              	print debugging information.
 </pre>
 
+The reason it is not an executable jar is that it is not possible to modify the classpath at runtime in a jar.
+
 ## Dependencies
 All dependencies are included in the generated jar but the generated DSL will have the following dependencies:
 * org.apache.commons:commons-lang3:3.4 (or above)
 * AbstractDSL (can be generated with the -ga option)
 
 ## Supported field types
-All types are supported. The following classes will be initialized with RanodmUtils:
+All types are supported. The following classes will be initialized with RandomUtils:
 * java.lang.Double
 * java.lang.Float
 * java.lang.Integer
