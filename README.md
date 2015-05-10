@@ -119,12 +119,12 @@ public void shouldCreateCustomerInRepo() {
 ## Usage
 <pre>
 usage: java -jar dsl-generator-1.0.jar -c com.example.SomeClass [options]
- -c,--class <arg>		   fully qualified name of source class ie. com.example.SomeClass.
- -d <arg>				   the directory where the root package is located, ie
-                           {root-package-dir}/com/example/SomeClass. defaults to current directory.
- -ga,--generate-abstract   generate abstract base class
- -h                        print this message
- -v,--verbose              print debugging information.
+ -c,--class &lt;arg&gt;			  fully qualified name of source class ie. com.example.SomeClass.
+ -d &lt;arg&gt;					  the directory where the root package is located, ie
+							{root-package-dir}/com/example/SomeClass. defaults to current directory.
+ -ga,--generate-abstract	generate abstract base class
+ -h                        	print this message
+ -v,--verbose              	print debugging information.
 </pre>
 
 ## Dependencies
