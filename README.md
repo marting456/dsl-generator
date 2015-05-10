@@ -26,6 +26,11 @@ it will generate the following CustomerDSL.java:
 ```java
 package my.example;
 
+import java.lang.Integer;
+import java.lang.String;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
+
 public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
 
     private static final long THIRTY_YEARS_IN_MILLS = (long) 1000 * 60 * 60 * 60 * 24 * 30 * 365 * 30;
