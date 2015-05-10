@@ -59,13 +59,12 @@ public class Main {
 			}
 			LOGGER.debug("Finished");
 		} catch (InvalidUsageException e) {
-			LOGGER.error(e.getMessage());
+			LOGGER.error(e);
 			formatter.printHelp(USAGE, options);
 		} catch (UnsupportedTypeException e) {
-			LOGGER.error(e.getMessage());
-			e.printStackTrace();
+			LOGGER.error(e);
 		} catch (ClassNotFoundException | IOException | TemplateException e) {
-			LOGGER.error(e.toString());
+			LOGGER.error(e);
 		}
 	}
 
