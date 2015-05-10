@@ -1,5 +1,7 @@
 package org.marting.dslgenerator.field;
 
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 /**
  * @author Martin Gercsak - mgercsak@yahoo.com.au
  */
@@ -38,10 +40,7 @@ public class Constant {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
+		return new HashCodeBuilder().append(this.name).build();
 	}
 	@Override
 	public boolean equals(Object obj) {

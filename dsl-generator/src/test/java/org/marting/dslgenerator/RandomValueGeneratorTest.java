@@ -41,6 +41,9 @@ public class RandomValueGeneratorTest {
 		result = rvg.getGeneratorValue(field2);
 		assertThat(result, startsWith("RandomUtils.nextInt"));
 		assertThat(rvg.getConstantsUsed().size(), is(1));
+		assertThat(rvg.getConstantsUsed().iterator().next().getName(), is("DEFAULT_MAX_INTEGER_VALUE"));
+		assertThat(rvg.getConstantsUsed().iterator().next().getType(), is("Integer"));
+		assertThat(rvg.getConstantsUsed().iterator().next().getValue(), is("10"));
 	}
 
 	@Test
