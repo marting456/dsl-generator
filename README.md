@@ -138,3 +138,6 @@ All types are supported. The following classes will be initialized with RanodmUt
 * java.util.Date
 
 All other types will be initialized with a default constructor if exists. To null otherwise.
+
+## Configuration
+Default constant values can be set in constants.properties.
