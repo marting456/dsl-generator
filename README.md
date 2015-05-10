@@ -30,7 +30,7 @@ public class CustomerDSL extends AbstractDSL<CustomerDSL, Customer> {
 
     private static final long THIRTY_YEARS_IN_MILLS = (long) 1000 * 60 * 60 * 60 * 24 * 30 * 365 * 30;
     private static final Integer DEFAULT_MAX_INTEGER_VALUE = 10;
-     private static final int DEFAULT_MAX_STRING_LENGTH = 10;
+    private static final int DEFAULT_MAX_STRING_LENGTH = 10;
     
     private Integer customerId = RandomUtils.nextInt(0, DEFAULT_MAX_INTEGER_VALUE);
     private String firstname = RandomStringUtils.randomAlphabetic(DEFAULT_MAX_STRING_LENGTH);
@@ -136,5 +136,5 @@ All types are supported. The following classes will be initialized with RanodmUt
 * java.lang.Short
 * java.lang.String
 * java.util.Date
-* 
+
 All other types will be initialized with a default constructor if exists. To null otherwise.
